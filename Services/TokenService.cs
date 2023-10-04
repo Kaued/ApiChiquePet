@@ -1,18 +1,19 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ApiCatalogo.DTOs;
 using APICatalogo.Models;
 using APICatalogo.Service;
 using Microsoft.IdentityModel.Tokens;
 
 namespace APICatalogo.Services;
 
-public class TokenService: ITokeService {
+public class TokenService: ITokenService {
 
-  public string GerarToken(string key, string issues, string audience, UserModel user){
+  public TokenDTO GerarToken(string key, string issues, string audience, UserModel user){
     var claims = new []{
-      new Claim(ClaimTypes.Name, user.Email),
-      new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
+      new Claim(JwtRegisteredClaimNames.Name, user.Email),
+      new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
 
     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
@@ -27,7 +28,14 @@ public class TokenService: ITokeService {
     
     var tokenHandler = new JwtSecurityTokenHandler();
     var stringToken = tokenHandler.WriteToken(token);
+
+
     
-    return stringToken;
+    return new TokenDTO(){
+      Authenticated=true,
+      Token=stringToken,
+      Expiration= DateTime.Now.AddMinutes(120),
+      Message = "User logged"
+    };
   }
 }

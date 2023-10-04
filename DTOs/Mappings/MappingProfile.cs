@@ -8,7 +8,7 @@ namespace ApiCatalogo.DTOs.Mappings{
     public MappingProfile(){
       CreateMap<Produto, ProdutoDTO>().ReverseMap();
       CreateMap<Categoria, CategoriaDTO>().ReverseMap();
-      CreateMap<UserModel, CategoriaDTO>().ReverseMap();
+      CreateMap<UserModel, UserDTO>().ReverseMap();
     }
   }
 }

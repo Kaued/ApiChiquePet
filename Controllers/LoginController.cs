@@ -19,9 +19,9 @@ public class LoginController : ControllerBase
     private readonly AppDbContext _context;
     private IConfiguration Configuration;
 
-    private readonly ITokeService tokeService;
+    private readonly ITokenService tokeService;
 
-    public LoginController(AppDbContext context, IConfiguration configuration, ITokeService tokenServices)
+    public LoginController(AppDbContext context, IConfiguration configuration, ITokenService tokenServices)
     {
         Configuration=(IConfigurationRoot)configuration;
         _context = context;

@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace APICatalogo.Models;
 
 
-public class UserModel
+public class UserModel : IdentityUser
 { 
   public string? Email{get; set;}
 

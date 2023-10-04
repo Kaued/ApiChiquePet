@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ApiCatalogo.DTOs;
 using APICatalogo.Models;
+using APICatalogo.Service;
 using APICatalogo.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -20,21 +21,16 @@ public class AdminController : ControllerBase
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IConfiguration _config;
     private readonly IMapper _mapper;
+    private readonly ITokenService _tokenService;
 
-    public AdminController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration config, IMapper mapper)
+    public AdminController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService)
     {
         this._userManager = userManager;
         this._signInManager = signInManager;
-        this._config=(IConfigurationRoot)config;
-        this._mapper=mapper;
+        this._config = (IConfigurationRoot)config;
+        this._mapper = mapper;
+        this._tokenService = tokenService;
     }
-
-    [HttpGet]
-    public ActionResult<string> Get()
-    {
-        return "SellerLoginController ::   Acessado em :" + DateTime.Now.ToLongTimeString();
-    }
-
 
     [HttpPost("register")]
     public async Task<ActionResult> RegisterUser([FromBody] UserDTO model)
@@ -63,17 +59,16 @@ public class AdminController : ControllerBase
         model.Password, isPersistent: false, lockoutOnFailure: false);
 
         if (result.Succeeded)
-        {   
-            var claims = new[]{
-                new Claim(JwtRegisteredClaimNames.UniqueName, model.Email),
-                new Claim(JwtRegisteredClaimNames.CHash)
-            }
-            var tokenString = TokenService.GerarToken(_config["Jwt:Key"],
-                                                     _config["Jwt:Issuer"],
-                                                     _config["Jwt:Audience"],
-                                                     _mapper.Map<UserModel>(model));
+        {
 
-            return Ok(new { tokern = tokenString });
+            UserModel user = _mapper.Map<UserModel>(model);
+
+            TokenDTO tokenString = _tokenService.GerarToken(_config["Jwt:Key"],
+                                                        _config["TokenConfigurantion:Issuer"],
+                                                        _config["TokenConfigurantion:Audience"],
+                                                        user);
+
+            return Ok(new { token = tokenString });
         }
         else
         {
@@ -81,5 +76,4 @@ public class AdminController : ControllerBase
             return BadRequest(ModelState);
         }
     }
-
 }

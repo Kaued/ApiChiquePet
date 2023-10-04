@@ -28,7 +28,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(AuthenticationSchemes ="Bearer")]
         public ActionResult<IEnumerable<CategoriaDTO>> Get([FromQuery] CategoriaParameters categoriaParameters){
             var categorias =  PageList<Categoria>.ToPageList(_context.Categorias.AsNoTracking().OrderBy(on => on.Nome), categoriaParameters.PageNumber, categoriaParameters.PageSize);
 
