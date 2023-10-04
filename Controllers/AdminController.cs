@@ -53,7 +53,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult> LoginUser([FromBody] UserDTO model)
+    public async Task<ActionResult> LoginUser([FromBody] LoginDTO model)
     {
         var result = await _signInManager.PasswordSignInAsync(model.Email,
         model.Password, isPersistent: false, lockoutOnFailure: false);
