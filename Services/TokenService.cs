@@ -12,7 +12,7 @@ public class TokenService: ITokenService {
 
   public TokenDTO GerarToken(string key, string issues, string audience, UserModel user){
     var claims = new []{
-      new Claim(JwtRegisteredClaimNames.Name, user.Email),
+      new Claim(ClaimTypes.Name, user.Email),
       new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
 

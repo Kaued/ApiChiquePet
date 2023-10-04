@@ -6,8 +6,10 @@ using APICatalogo.Models;
 using APICatalogo.Service;
 using APICatalogo.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.JsonWebTokens;
 
@@ -30,6 +32,16 @@ public class AdminController : ControllerBase
         this._config = (IConfigurationRoot)config;
         this._mapper = mapper;
         this._tokenService = tokenService;
+    }
+
+    [HttpGet]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public ActionResult Get(){
+        var identity = HttpContext.User.Identity;
+  
+
+
+        return Ok(identity);
     }
 
     [HttpPost("register")]
