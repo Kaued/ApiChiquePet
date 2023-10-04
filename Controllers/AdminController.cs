@@ -2,6 +2,7 @@ using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ApiCatalogo.DTOs;
+using ApiCatalogo.Migrations;
 using APICatalogo.Models;
 using APICatalogo.Service;
 using APICatalogo.Services;
@@ -20,26 +21,27 @@ namespace ApiCatalogo.Controllers;
 public class AdminController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
+
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IConfiguration _config;
     private readonly IMapper _mapper;
-    private readonly ITokenService _tokenService;
+    private readonly ITokenService _tokenService;   
 
-    public AdminController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService)
+    public AdminController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, RoleManager<IdentityRole> roleManager)
     {
         this._userManager = userManager;
         this._signInManager = signInManager;
         this._config = (IConfigurationRoot)config;
         this._mapper = mapper;
         this._tokenService = tokenService;
+        this._roleManager = roleManager;
     }
 
     [HttpGet]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public ActionResult Get(){
         var identity = HttpContext.User.Identity;
-  
-
 
         return Ok(identity);
     }
@@ -60,6 +62,12 @@ public class AdminController : ControllerBase
             return BadRequest(result.Errors);
         }
 
+        if(!await _roleManager.RoleExistsAsync("Admin")){
+            await _roleManager.CreateAsync(new IdentityRole("Admin"));
+        }
+
+        await _userManager.AddToRoleAsync(user, "Admin");
+
         await _signInManager.SignInAsync(user, false);
         return Ok();
     }
@@ -72,15 +80,17 @@ public class AdminController : ControllerBase
 
         if (result.Succeeded)
         {
-
             UserModel user = _mapper.Map<UserModel>(model);
 
-            TokenDTO tokenString = _tokenService.GerarToken(_config["Jwt:Key"],
+            IList<string> userRoles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(model.Email));
+
+            TokenDTO token = _tokenService.GerarToken(_config["Jwt:Key"],
                                                         _config["TokenConfigurantion:Issuer"],
                                                         _config["TokenConfigurantion:Audience"],
-                                                        user);
+                                                        user,
+                                                        userRoles);
 
-            return Ok(new { token = tokenString });
+            return Ok(token);
         }
         else
         {

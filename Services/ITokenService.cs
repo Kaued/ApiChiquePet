@@ -4,5 +4,5 @@ using APICatalogo.Models;
 namespace APICatalogo.Service;
 
 public interface ITokenService{
-  TokenDTO GerarToken(string key, string issues, string audience, UserModel user);
+  TokenDTO GerarToken(string key, string issues, string audience, UserModel user, IList<string> userRoles);
 }

@@ -10,11 +10,15 @@ namespace APICatalogo.Services;
 
 public class TokenService: ITokenService {
 
-  public TokenDTO GerarToken(string key, string issues, string audience, UserModel user){
-    var claims = new []{
+  public TokenDTO GerarToken(string key, string issues, string audience, UserModel user, IList<string> userRoles){
+    var claims = new List<Claim>(){
       new Claim(ClaimTypes.Name, user.Email),
       new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
+
+    foreach (var role in userRoles){
+      claims.Add(new Claim(ClaimTypes.Role, role));
+    }
 
     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
