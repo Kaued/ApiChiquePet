@@ -1043,3 +1043,531 @@ SELECT `a0`.`Name`
 FROM `AspNetUserRoles` AS `a`
 INNER JOIN `AspNetRoles` AS `a0` ON `a`.`RoleId` = `a0`.`Id`
 WHERE `a`.`UserId` = @__userId_0
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Information: 20101 - Executed DbCommand (31ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='chiquepet_db' AND TABLE_NAME='__EFMigrationsHistory';
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Information: 20101 - Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='chiquepet_db' AND TABLE_NAME='__EFMigrationsHistory';
+Information: 20101 - Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `__EFMigrationsHistory` (
+    `MigrationId` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
+    `ProductVersion` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK___EFMigrationsHistory` PRIMARY KEY (`MigrationId`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='chiquepet_db' AND TABLE_NAME='__EFMigrationsHistory';
+Information: 20101 - Executed DbCommand (63ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+Information: 20402 - Applying migration '20231005191326_create_user_table'.
+Information: 20101 - Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER DATABASE CHARACTER SET utf8mb4;
+Information: 20101 - Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetRoles` (
+    `Id` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetRoles` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (14ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUsers` (
+    `Id` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `BirthDate` datetime(6) NOT NULL,
+    `UserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedUserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `Email` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedEmail` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `EmailConfirmed` tinyint(1) NOT NULL,
+    `PasswordHash` longtext CHARACTER SET utf8mb4 NULL,
+    `SecurityStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumber` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+    `TwoFactorEnabled` tinyint(1) NOT NULL,
+    `LockoutEnd` datetime(6) NULL,
+    `LockoutEnabled` tinyint(1) NOT NULL,
+    `AccessFailedCount` int NOT NULL,
+    CONSTRAINT `PK_AspNetUsers` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (11ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `Categorias` (
+    `CategoriaId` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `ImagemUrl` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_Categorias` PRIMARY KEY (`CategoriaId`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (78ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetRoleClaims` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `RoleId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ClaimType` longtext CHARACTER SET utf8mb4 NULL,
+    `ClaimValue` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetRoleClaims` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AspNetRoleClaims_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (37ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AddressModel` (
+    `AdressId` int NOT NULL AUTO_INCREMENT,
+    `Cep` varchar(8) CHARACTER SET utf8mb4 NOT NULL,
+    `Street` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `Neighborhood` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `City` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `District` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `Number` int NOT NULL,
+    `Complent` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `UserId` int NOT NULL,
+    `UserId1` varchar(255) CHARACTER SET utf8mb4 NULL,
+    `Id` longtext CHARACTER SET utf8mb4 NOT NULL,
+    `UserName` longtext CHARACTER SET utf8mb4 NULL,
+    `NormalizedUserName` longtext CHARACTER SET utf8mb4 NULL,
+    `Email` longtext CHARACTER SET utf8mb4 NULL,
+    `NormalizedEmail` longtext CHARACTER SET utf8mb4 NULL,
+    `EmailConfirmed` tinyint(1) NOT NULL,
+    `PasswordHash` longtext CHARACTER SET utf8mb4 NULL,
+    `SecurityStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumber` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+    `TwoFactorEnabled` tinyint(1) NOT NULL,
+    `LockoutEnd` datetime(6) NULL,
+    `LockoutEnabled` tinyint(1) NOT NULL,
+    `AccessFailedCount` int NOT NULL,
+    CONSTRAINT `PK_AddressModel` PRIMARY KEY (`AdressId`),
+    CONSTRAINT `FK_AddressModel_AspNetUsers_UserId1` FOREIGN KEY (`UserId1`) REFERENCES `AspNetUsers` (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (49ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserClaims` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ClaimType` longtext CHARACTER SET utf8mb4 NULL,
+    `ClaimValue` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetUserClaims` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (51ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserLogins` (
+    `LoginProvider` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderKey` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderDisplayName` longtext CHARACTER SET utf8mb4 NULL,
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AspNetUserLogins` PRIMARY KEY (`LoginProvider`, `ProviderKey`),
+    CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (32ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserRoles` (
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `RoleId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AspNetUserRoles` PRIMARY KEY (`UserId`, `RoleId`),
+    CONSTRAINT `FK_AspNetUserRoles_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (15ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserTokens` (
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `LoginProvider` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Value` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetUserTokens` PRIMARY KEY (`UserId`, `LoginProvider`, `Name`),
+    CONSTRAINT `FK_AspNetUserTokens_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (47ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `Produtos` (
+    `ProdutoId` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Descricao` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Preco` decimal(10,2) NOT NULL,
+    `ImagemUrl` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Estoque` float NOT NULL,
+    `DataCadastro` datetime(6) NULL,
+    `CategoriaId` int NOT NULL,
+    CONSTRAINT `PK_Produtos` PRIMARY KEY (`ProdutoId`),
+    CONSTRAINT `FK_Produtos_Categorias_CategoriaId` FOREIGN KEY (`CategoriaId`) REFERENCES `Categorias` (`CategoriaId`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO `AspNetRoles` (`Id`, `ConcurrencyStamp`, `Name`, `NormalizedName`)
+VALUES ('02174cf0–9412–4cfe-afbf-59f706d72cf6', '02174cf0–9412–4cfe-afbf-59f706d72cf6', 'Super admin', 'SUPER ADMIN');
+Information: 20101 - Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AddressModel_UserId1` ON `AddressModel` (`UserId1`);
+Information: 20101 - Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetRoleClaims_RoleId` ON `AspNetRoleClaims` (`RoleId`);
+Information: 20101 - Executed DbCommand (17ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX `RoleNameIndex` ON `AspNetRoles` (`NormalizedName`);
+Information: 20101 - Executed DbCommand (16ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserClaims_UserId` ON `AspNetUserClaims` (`UserId`);
+Information: 20101 - Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserLogins_UserId` ON `AspNetUserLogins` (`UserId`);
+Information: 20101 - Executed DbCommand (21ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserRoles_RoleId` ON `AspNetUserRoles` (`RoleId`);
+Information: 20101 - Executed DbCommand (36ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `EmailIndex` ON `AspNetUsers` (`NormalizedEmail`);
+Information: 20101 - Executed DbCommand (30ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX `UserNameIndex` ON `AspNetUsers` (`NormalizedUserName`);
+Information: 20101 - Executed DbCommand (39ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_Produtos_CategoriaId` ON `Produtos` (`CategoriaId`);
+Information: 20101 - Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20231005191326_create_user_table', '7.0.11');
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Information: 20101 - Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='chiquepet_db' AND TABLE_NAME='__EFMigrationsHistory';
+Information: 20101 - Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Information: 20101 - Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='chiquepet_db' AND TABLE_NAME='__EFMigrationsHistory';
+Information: 20101 - Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `__EFMigrationsHistory` (
+    `MigrationId` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
+    `ProductVersion` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK___EFMigrationsHistory` PRIMARY KEY (`MigrationId`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='chiquepet_db' AND TABLE_NAME='__EFMigrationsHistory';
+Information: 20101 - Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+Information: 20402 - Applying migration '20231005192706_create_user_table'.
+Information: 20101 - Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER DATABASE CHARACTER SET utf8mb4;
+Information: 20101 - Executed DbCommand (10ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetRoles` (
+    `Id` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetRoles` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUsers` (
+    `Id` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `BirthDate` datetime(6) NOT NULL,
+    `UserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedUserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `Email` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedEmail` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `EmailConfirmed` tinyint(1) NOT NULL,
+    `PasswordHash` longtext CHARACTER SET utf8mb4 NULL,
+    `SecurityStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumber` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+    `TwoFactorEnabled` tinyint(1) NOT NULL,
+    `LockoutEnd` datetime(6) NULL,
+    `LockoutEnabled` tinyint(1) NOT NULL,
+    `AccessFailedCount` int NOT NULL,
+    CONSTRAINT `PK_AspNetUsers` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `Categorias` (
+    `CategoriaId` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `ImagemUrl` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_Categorias` PRIMARY KEY (`CategoriaId`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (49ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetRoleClaims` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `RoleId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ClaimType` longtext CHARACTER SET utf8mb4 NULL,
+    `ClaimValue` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetRoleClaims` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AspNetRoleClaims_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (36ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AddressModel` (
+    `AdressId` int NOT NULL AUTO_INCREMENT,
+    `Cep` varchar(8) CHARACTER SET utf8mb4 NOT NULL,
+    `Street` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `Neighborhood` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `City` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `District` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `Number` int NOT NULL,
+    `Complent` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `UserId` int NOT NULL,
+    `UserId1` varchar(255) CHARACTER SET utf8mb4 NULL,
+    `Id` longtext CHARACTER SET utf8mb4 NOT NULL,
+    `UserName` longtext CHARACTER SET utf8mb4 NULL,
+    `NormalizedUserName` longtext CHARACTER SET utf8mb4 NULL,
+    `Email` longtext CHARACTER SET utf8mb4 NULL,
+    `NormalizedEmail` longtext CHARACTER SET utf8mb4 NULL,
+    `EmailConfirmed` tinyint(1) NOT NULL,
+    `PasswordHash` longtext CHARACTER SET utf8mb4 NULL,
+    `SecurityStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumber` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+    `TwoFactorEnabled` tinyint(1) NOT NULL,
+    `LockoutEnd` datetime(6) NULL,
+    `LockoutEnabled` tinyint(1) NOT NULL,
+    `AccessFailedCount` int NOT NULL,
+    CONSTRAINT `PK_AddressModel` PRIMARY KEY (`AdressId`),
+    CONSTRAINT `FK_AddressModel_AspNetUsers_UserId1` FOREIGN KEY (`UserId1`) REFERENCES `AspNetUsers` (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (41ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserClaims` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ClaimType` longtext CHARACTER SET utf8mb4 NULL,
+    `ClaimValue` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetUserClaims` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (52ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserLogins` (
+    `LoginProvider` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderKey` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderDisplayName` longtext CHARACTER SET utf8mb4 NULL,
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AspNetUserLogins` PRIMARY KEY (`LoginProvider`, `ProviderKey`),
+    CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (47ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserRoles` (
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `RoleId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AspNetUserRoles` PRIMARY KEY (`UserId`, `RoleId`),
+    CONSTRAINT `FK_AspNetUserRoles_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (15ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserTokens` (
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `LoginProvider` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Value` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetUserTokens` PRIMARY KEY (`UserId`, `LoginProvider`, `Name`),
+    CONSTRAINT `FK_AspNetUserTokens_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (52ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `Produtos` (
+    `ProdutoId` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Descricao` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Preco` decimal(10,2) NOT NULL,
+    `ImagemUrl` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Estoque` float NOT NULL,
+    `DataCadastro` datetime(6) NULL,
+    `CategoriaId` int NOT NULL,
+    CONSTRAINT `PK_Produtos` PRIMARY KEY (`ProdutoId`),
+    CONSTRAINT `FK_Produtos_Categorias_CategoriaId` FOREIGN KEY (`CategoriaId`) REFERENCES `Categorias` (`CategoriaId`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO `AspNetRoles` (`Id`, `ConcurrencyStamp`, `Name`, `NormalizedName`)
+VALUES ('50e428a8-1822-46af-8a6f-15e2dfc4a90b', NULL, 'Super admin', 'SUPER ADMIN');
+Information: 20101 - Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AddressModel_UserId1` ON `AddressModel` (`UserId1`);
+Information: 20101 - Executed DbCommand (21ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetRoleClaims_RoleId` ON `AspNetRoleClaims` (`RoleId`);
+Information: 20101 - Executed DbCommand (21ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX `RoleNameIndex` ON `AspNetRoles` (`NormalizedName`);
+Information: 20101 - Executed DbCommand (27ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserClaims_UserId` ON `AspNetUserClaims` (`UserId`);
+Information: 20101 - Executed DbCommand (29ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserLogins_UserId` ON `AspNetUserLogins` (`UserId`);
+Information: 20101 - Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserRoles_RoleId` ON `AspNetUserRoles` (`RoleId`);
+Information: 20101 - Executed DbCommand (27ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `EmailIndex` ON `AspNetUsers` (`NormalizedEmail`);
+Information: 20101 - Executed DbCommand (25ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX `UserNameIndex` ON `AspNetUsers` (`NormalizedUserName`);
+Information: 20101 - Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_Produtos_CategoriaId` ON `Produtos` (`CategoriaId`);
+Information: 20101 - Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20231005192706_create_user_table', '7.0.11');
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Information: 20101 - Executed DbCommand (48ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+DROP DATABASE `chiquepet_db`;
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Warning: 10625 - The foreign key property 'AddressModel.UserId1' was created in shadow state because a conflicting property with the simple name 'UserId' exists in the entity type, but is either not mapped, is already used for another relationship, or is incompatible with the associated primary key type. See https://aka.ms/efcore-relationships for information on mapping relationships in EF Core.
+Information: 20101 - Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE DATABASE `chiquepet_db`;
+Information: 20101 - Executed DbCommand (11ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `__EFMigrationsHistory` (
+    `MigrationId` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
+    `ProductVersion` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK___EFMigrationsHistory` PRIMARY KEY (`MigrationId`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='chiquepet_db' AND TABLE_NAME='__EFMigrationsHistory';
+Information: 20101 - Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+Information: 20402 - Applying migration '20231005193445_create_user_table'.
+Information: 20101 - Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER DATABASE CHARACTER SET utf8mb4;
+Information: 20101 - Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetRoles` (
+    `Id` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetRoles` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUsers` (
+    `Id` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `BirthDate` datetime(6) NOT NULL,
+    `UserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedUserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `Email` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `NormalizedEmail` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `EmailConfirmed` tinyint(1) NOT NULL,
+    `PasswordHash` longtext CHARACTER SET utf8mb4 NULL,
+    `SecurityStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumber` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+    `TwoFactorEnabled` tinyint(1) NOT NULL,
+    `LockoutEnd` datetime(6) NULL,
+    `LockoutEnabled` tinyint(1) NOT NULL,
+    `AccessFailedCount` int NOT NULL,
+    CONSTRAINT `PK_AspNetUsers` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `Categorias` (
+    `CategoriaId` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `ImagemUrl` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_Categorias` PRIMARY KEY (`CategoriaId`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (35ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetRoleClaims` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `RoleId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ClaimType` longtext CHARACTER SET utf8mb4 NULL,
+    `ClaimValue` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetRoleClaims` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AspNetRoleClaims_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (28ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AddressModel` (
+    `AdressId` int NOT NULL AUTO_INCREMENT,
+    `Cep` varchar(8) CHARACTER SET utf8mb4 NOT NULL,
+    `Street` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `Neighborhood` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `City` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `District` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `Number` int NOT NULL,
+    `Complent` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `UserId` int NOT NULL,
+    `UserId1` varchar(255) CHARACTER SET utf8mb4 NULL,
+    `Id` longtext CHARACTER SET utf8mb4 NOT NULL,
+    `UserName` longtext CHARACTER SET utf8mb4 NULL,
+    `NormalizedUserName` longtext CHARACTER SET utf8mb4 NULL,
+    `Email` longtext CHARACTER SET utf8mb4 NULL,
+    `NormalizedEmail` longtext CHARACTER SET utf8mb4 NULL,
+    `EmailConfirmed` tinyint(1) NOT NULL,
+    `PasswordHash` longtext CHARACTER SET utf8mb4 NULL,
+    `SecurityStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumber` longtext CHARACTER SET utf8mb4 NULL,
+    `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+    `TwoFactorEnabled` tinyint(1) NOT NULL,
+    `LockoutEnd` datetime(6) NULL,
+    `LockoutEnabled` tinyint(1) NOT NULL,
+    `AccessFailedCount` int NOT NULL,
+    CONSTRAINT `PK_AddressModel` PRIMARY KEY (`AdressId`),
+    CONSTRAINT `FK_AddressModel_AspNetUsers_UserId1` FOREIGN KEY (`UserId1`) REFERENCES `AspNetUsers` (`Id`)
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (57ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserClaims` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ClaimType` longtext CHARACTER SET utf8mb4 NULL,
+    `ClaimValue` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetUserClaims` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (37ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserLogins` (
+    `LoginProvider` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderKey` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderDisplayName` longtext CHARACTER SET utf8mb4 NULL,
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AspNetUserLogins` PRIMARY KEY (`LoginProvider`, `ProviderKey`),
+    CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (58ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserRoles` (
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `RoleId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AspNetUserRoles` PRIMARY KEY (`UserId`, `RoleId`),
+    CONSTRAINT `FK_AspNetUserRoles_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `AspNetUserTokens` (
+    `UserId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `LoginProvider` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `Value` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AspNetUserTokens` PRIMARY KEY (`UserId`, `LoginProvider`, `Name`),
+    CONSTRAINT `FK_AspNetUserTokens_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (35ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE TABLE `Produtos` (
+    `ProdutoId` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Descricao` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Preco` decimal(10,2) NOT NULL,
+    `ImagemUrl` varchar(300) CHARACTER SET utf8mb4 NOT NULL,
+    `Estoque` float NOT NULL,
+    `DataCadastro` datetime(6) NULL,
+    `CategoriaId` int NOT NULL,
+    CONSTRAINT `PK_Produtos` PRIMARY KEY (`ProdutoId`),
+    CONSTRAINT `FK_Produtos_Categorias_CategoriaId` FOREIGN KEY (`CategoriaId`) REFERENCES `Categorias` (`CategoriaId`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+Information: 20101 - Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO `AspNetRoles` (`Id`, `ConcurrencyStamp`, `Name`, `NormalizedName`)
+VALUES ('19d597d0-15f6-473f-8d7c-505ad2e55acb', NULL, 'Super admin', 'SUPER ADMIN'),
+('476c181b-f9cb-44ab-9fb2-df432de565ad', NULL, 'Client', 'CLIENT'),
+('e6af5f24-c8af-4ff3-9a6e-15a74697a49b', NULL, 'Seller', 'SELLER');
+Information: 20101 - Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO `AspNetUsers` (`Id`, `AccessFailedCount`, `BirthDate`, `ConcurrencyStamp`, `Email`, `EmailConfirmed`, `LockoutEnabled`, `LockoutEnd`, `NormalizedEmail`, `NormalizedUserName`, `PasswordHash`, `PhoneNumber`, `PhoneNumberConfirmed`, `SecurityStamp`, `TwoFactorEnabled`, `UserName`)
+VALUES ('a3becdcb-2d69-4455-8873-144be7904621', 0, TIMESTAMP '2003-10-09 00:00:00', '46073962-d061-4851-96d0-2e70919952b1', 'kauedomingues98@gmail.com', TRUE, FALSE, NULL, NULL, NULL, 'AQAAAAIAAYagAAAAEIwmQJQUDcJcTuWdH3rm7bhoh4tkdMmVkx876re6uAWxUEsvt3AJe93U4Byyko82Gw==', '17996583206', TRUE, 'ca474df3-196e-4470-97f0-9fe4c1fb4102', FALSE, 'Chique Pet');
+Information: 20101 - Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO `AspNetUserRoles` (`RoleId`, `UserId`)
+VALUES ('19d597d0-15f6-473f-8d7c-505ad2e55acb', 'a3becdcb-2d69-4455-8873-144be7904621'),
+('476c181b-f9cb-44ab-9fb2-df432de565ad', 'a3becdcb-2d69-4455-8873-144be7904621'),
+('e6af5f24-c8af-4ff3-9a6e-15a74697a49b', 'a3becdcb-2d69-4455-8873-144be7904621');
+Information: 20101 - Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AddressModel_UserId1` ON `AddressModel` (`UserId1`);
+Information: 20101 - Executed DbCommand (17ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetRoleClaims_RoleId` ON `AspNetRoleClaims` (`RoleId`);
+Information: 20101 - Executed DbCommand (17ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX `RoleNameIndex` ON `AspNetRoles` (`NormalizedName`);
+Information: 20101 - Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserClaims_UserId` ON `AspNetUserClaims` (`UserId`);
+Information: 20101 - Executed DbCommand (26ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserLogins_UserId` ON `AspNetUserLogins` (`UserId`);
+Information: 20101 - Executed DbCommand (23ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_AspNetUserRoles_RoleId` ON `AspNetUserRoles` (`RoleId`);
+Information: 20101 - Executed DbCommand (24ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `EmailIndex` ON `AspNetUsers` (`NormalizedEmail`);
+Information: 20101 - Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE UNIQUE INDEX `UserNameIndex` ON `AspNetUsers` (`NormalizedUserName`);
+Information: 20101 - Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE INDEX `IX_Produtos_CategoriaId` ON `Produtos` (`CategoriaId`);
+Information: 20101 - Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20231005193445_create_user_table', '7.0.11');

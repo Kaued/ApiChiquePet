@@ -19,6 +19,8 @@ public class AppDbContext : IdentityDbContext<UserModel>
     var roles = this.SeedRoles(model);
     var users = this.SeedUser(model);
     this.SeedUserRoles(model, users, roles);
+
+    base.OnModelCreating(model);
   }
 
   protected List<IdentityRole> SeedRoles(ModelBuilder model)
