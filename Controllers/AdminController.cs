@@ -2,7 +2,6 @@ using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ApiCatalogo.DTOs;
-using ApiCatalogo.Migrations;
 using APICatalogo.Models;
 using APICatalogo.Service;
 using APICatalogo.Services;
@@ -17,18 +16,19 @@ using Microsoft.IdentityModel.JsonWebTokens;
 namespace ApiCatalogo.Controllers;
 
 [Route("[controller]")]
+
 [ApiController]
 public class AdminController : ControllerBase
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<UserModel> _userManager;
 
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<UserModel> _signInManager;
     private readonly IConfiguration _config;
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;   
 
-    public AdminController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, RoleManager<IdentityRole> roleManager)
+    public AdminController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, RoleManager<IdentityRole> roleManager)
     {
         this._userManager = userManager;
         this._signInManager = signInManager;
@@ -47,11 +47,14 @@ public class AdminController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult> RegisterUser([FromBody] UserDTO model)
+    public async Task<ActionResult> RegisterUser([FromBody] RegisterDTO model)
     {
-        var user = new IdentityUser
+        var user = new UserModel
         {
-            UserName = model.Email,
+            UserName = model.Name,
+            BirthDate = model.BirthDate,
+            PhoneNumber = model.Phone,
+            PhoneNumberConfirmed = true,
             Email = model.Email,
             EmailConfirmed = true
         };
@@ -60,10 +63,6 @@ public class AdminController : ControllerBase
         if (!result.Succeeded)
         {
             return BadRequest(result.Errors);
-        }
-
-        if(!await _roleManager.RoleExistsAsync("Admin")){
-            await _roleManager.CreateAsync(new IdentityRole("Admin"));
         }
 
         await _userManager.AddToRoleAsync(user, "Admin");

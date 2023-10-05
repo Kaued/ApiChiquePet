@@ -1,12 +1,17 @@
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace APICatalogo.Models;
 
 
 public class UserModel : IdentityUser
-{ 
-  public string? Email{get; set;}
+{  
+  public UserModel(){
+    Address = new Collection<AddressModel>();
+  }
+  [Required]
+  public DateTime BirthDate {get; set;}
 
-  public string? Password{get; set;} 
-
+  public ICollection<AddressModel> Address {get; set;}
 }
