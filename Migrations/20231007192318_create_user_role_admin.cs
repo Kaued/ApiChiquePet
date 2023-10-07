@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiCatalogo.Migrations
 {
     /// <inheritdoc />
-    public partial class create_user_table : Migration
+    public partial class create_user_role_admin : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -308,24 +308,24 @@ namespace ApiCatalogo.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "19d597d0-15f6-473f-8d7c-505ad2e55acb", null, "Super admin", "SUPER ADMIN" },
-                    { "476c181b-f9cb-44ab-9fb2-df432de565ad", null, "Client", "CLIENT" },
-                    { "e6af5f24-c8af-4ff3-9a6e-15a74697a49b", null, "Seller", "SELLER" }
+                    { "73a762d9-e514-488b-afe8-2e6ac8aa6a2f", null, "Client", "CLIENT" },
+                    { "79f8db08-c92e-4760-ad3a-f26088d39af3", null, "Seller", "SELLER" },
+                    { "829f3b6e-3d1d-4692-af2a-7ae11e70cb46", null, "Super Admin", "SUPER ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "a3becdcb-2d69-4455-8873-144be7904621", 0, new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "46073962-d061-4851-96d0-2e70919952b1", "kauedomingues98@gmail.com", true, false, null, null, null, "AQAAAAIAAYagAAAAEIwmQJQUDcJcTuWdH3rm7bhoh4tkdMmVkx876re6uAWxUEsvt3AJe93U4Byyko82Gw==", "17996583206", true, "ca474df3-196e-4470-97f0-9fe4c1fb4102", false, "Chique Pet" });
+                values: new object[] { "3e63abf9-e8a4-458b-ac64-f8b17f94f746", 0, new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "d6c4cff0-9da2-4bdc-9017-89b12e9ed769", "kauedomingues98@gmail.com", true, false, null, "KAUEDOMINGUES98@GMAIL.COM", "CHIQUE PET", "AQAAAAIAAYagAAAAEA6rE/kh2HD5G5AgiMe4YNt0cwcx+buiknLFE3vHix+JMVKI4tjq1xcn7TxHfyCSlg==", "17996583206", true, "a4061030-8592-4b4b-a0a6-cc50f7773d9a", false, "Chique Pet" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "19d597d0-15f6-473f-8d7c-505ad2e55acb", "a3becdcb-2d69-4455-8873-144be7904621" },
-                    { "476c181b-f9cb-44ab-9fb2-df432de565ad", "a3becdcb-2d69-4455-8873-144be7904621" },
-                    { "e6af5f24-c8af-4ff3-9a6e-15a74697a49b", "a3becdcb-2d69-4455-8873-144be7904621" }
+                    { "73a762d9-e514-488b-afe8-2e6ac8aa6a2f", "3e63abf9-e8a4-458b-ac64-f8b17f94f746" },
+                    { "79f8db08-c92e-4760-ad3a-f26088d39af3", "3e63abf9-e8a4-458b-ac64-f8b17f94f746" },
+                    { "829f3b6e-3d1d-4692-af2a-7ae11e70cb46", "3e63abf9-e8a4-458b-ac64-f8b17f94f746" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiCatalogo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231005193445_create_user_table")]
-    partial class create_user_table
+    [Migration("20231007192318_create_user_role_admin")]
+    partial class create_user_role_admin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,17 +249,19 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a3becdcb-2d69-4455-8873-144be7904621",
+                            Id = "3e63abf9-e8a4-458b-ac64-f8b17f94f746",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "46073962-d061-4851-96d0-2e70919952b1",
+                            ConcurrencyStamp = "d6c4cff0-9da2-4bdc-9017-89b12e9ed769",
                             Email = "kauedomingues98@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEIwmQJQUDcJcTuWdH3rm7bhoh4tkdMmVkx876re6uAWxUEsvt3AJe93U4Byyko82Gw==",
+                            NormalizedEmail = "KAUEDOMINGUES98@GMAIL.COM",
+                            NormalizedUserName = "CHIQUE PET",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA6rE/kh2HD5G5AgiMe4YNt0cwcx+buiknLFE3vHix+JMVKI4tjq1xcn7TxHfyCSlg==",
                             PhoneNumber = "17996583206",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "ca474df3-196e-4470-97f0-9fe4c1fb4102",
+                            SecurityStamp = "a4061030-8592-4b4b-a0a6-cc50f7773d9a",
                             TwoFactorEnabled = false,
                             UserName = "Chique Pet"
                         });
@@ -293,19 +295,19 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "19d597d0-15f6-473f-8d7c-505ad2e55acb",
-                            Name = "Super admin",
+                            Id = "829f3b6e-3d1d-4692-af2a-7ae11e70cb46",
+                            Name = "Super Admin",
                             NormalizedName = "SUPER ADMIN"
                         },
                         new
                         {
-                            Id = "e6af5f24-c8af-4ff3-9a6e-15a74697a49b",
+                            Id = "79f8db08-c92e-4760-ad3a-f26088d39af3",
                             Name = "Seller",
                             NormalizedName = "SELLER"
                         },
                         new
                         {
-                            Id = "476c181b-f9cb-44ab-9fb2-df432de565ad",
+                            Id = "73a762d9-e514-488b-afe8-2e6ac8aa6a2f",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -396,18 +398,18 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "a3becdcb-2d69-4455-8873-144be7904621",
-                            RoleId = "19d597d0-15f6-473f-8d7c-505ad2e55acb"
+                            UserId = "3e63abf9-e8a4-458b-ac64-f8b17f94f746",
+                            RoleId = "829f3b6e-3d1d-4692-af2a-7ae11e70cb46"
                         },
                         new
                         {
-                            UserId = "a3becdcb-2d69-4455-8873-144be7904621",
-                            RoleId = "e6af5f24-c8af-4ff3-9a6e-15a74697a49b"
+                            UserId = "3e63abf9-e8a4-458b-ac64-f8b17f94f746",
+                            RoleId = "79f8db08-c92e-4760-ad3a-f26088d39af3"
                         },
                         new
                         {
-                            UserId = "a3becdcb-2d69-4455-8873-144be7904621",
-                            RoleId = "476c181b-f9cb-44ab-9fb2-df432de565ad"
+                            UserId = "3e63abf9-e8a4-458b-ac64-f8b17f94f746",
+                            RoleId = "73a762d9-e514-488b-afe8-2e6ac8aa6a2f"
                         });
                 });
 

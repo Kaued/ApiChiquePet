@@ -27,7 +27,7 @@ public class AppDbContext : IdentityDbContext<UserModel>
   {
 
     List<IdentityRole> roles = new List<IdentityRole>(){
-      new IdentityRole(){Name="Super admin", NormalizedName="SUPER ADMIN"},
+      new IdentityRole(){Name="Super Admin", NormalizedName="SUPER ADMIN"},
       new IdentityRole(){Name="Seller", NormalizedName="SELLER"},
       new IdentityRole(){Name="Client", NormalizedName="CLIENT"}
     };
@@ -41,7 +41,7 @@ public class AppDbContext : IdentityDbContext<UserModel>
   {
 
     List<UserModel> users = new List<UserModel>(){
-      new UserModel(){UserName="Chique Pet", Email="kauedomingues98@gmail.com", BirthDate = new DateTime(2003, 10, 09), EmailConfirmed=true, PhoneNumber="17996583206", PhoneNumberConfirmed=true}
+      new UserModel(){UserName="Chique Pet", NormalizedUserName="CHIQUE PET", Email="kauedomingues98@gmail.com", NormalizedEmail="KAUEDOMINGUES98@GMAIL.COM",BirthDate = new DateTime(2003, 10, 09), EmailConfirmed=true, PhoneNumber="17996583206", PhoneNumberConfirmed=true}
     };
 
     model.Entity<UserModel>().HasData(users);

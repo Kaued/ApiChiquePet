@@ -5,6 +5,7 @@ using ApiCatalogo.DTOs.Mappings;
 using ApiCatalogo.Loggin;
 using APICatalogo.Context;
 using APICatalogo.Filters;
+using APICatalogo.Models;
 using APICatalogo.Service;
 using APICatalogo.Services;
 using AutoMapper;
@@ -50,7 +51,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-builder.Services.AddControllers().AddJsonOptions(options=>
+builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -60,7 +61,8 @@ builder.Services.AddSwaggerGen();
 
 string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 
-var mappingConfig = new MapperConfiguration(mc=>{
+var mappingConfig = new MapperConfiguration(mc =>
+{
     mc.AddProfile(new MappingProfile());
 });
 
@@ -71,8 +73,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSingleton<ITokenService>(new TokenService());
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>{
-    options.TokenValidationParameters = new TokenValidationParameters{
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
@@ -89,13 +93,19 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<ApiLogginFilter>();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<UserModel, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration{
-    LogLevel= Microsoft.Extensions.Logging.LogLevel.Information
+builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
+{
+    LogLevel = Microsoft.Extensions.Logging.LogLevel.Information
 }));
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+});
 
 builder.Services.AddSingleton(mapper);
 var app = builder.Build();
