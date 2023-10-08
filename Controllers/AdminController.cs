@@ -7,6 +7,7 @@ using APICatalogo.Service;
 using APICatalogo.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
@@ -18,7 +19,7 @@ using Microsoft.Win32;
 namespace ApiCatalogo.Controllers;
 
 [Route("[controller]")]
-
+[EnableCors("Admin")]
 [ApiController]
 [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin,Seller")]
 public class AdminController : ControllerBase
