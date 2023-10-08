@@ -39,7 +39,7 @@ public class TokenService: ITokenService {
       Authenticated=true,
       Token=stringToken,
       Expiration= DateTime.Now.AddMinutes(120),
-      Message = "User logged"
+      Roles = userRoles
     };
   }
 }
