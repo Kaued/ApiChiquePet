@@ -148,7 +148,7 @@ public class AdminController : ControllerBase
         if (emailToken is null)
             return BadRequest("Esqeuceu o email amigo");
 
-        if ( email != emailToken)
+        if (email != emailToken)
         {
             var user = await _userManager.FindByEmailAsync(emailToken);
 
@@ -160,12 +160,12 @@ public class AdminController : ControllerBase
             }
 
         }
-        
+
         var updateResult = await Update(model, email);
 
         return updateResult is not null ? Ok(updateResult.Email) : BadRequest();
 
-        
+
     }
 
     [HttpDelete("{email}")]
@@ -238,16 +238,12 @@ public class AdminController : ControllerBase
         }
     }
 
-    private async Task<UserModel?> Update(UpdateAdminDTO model, string email){
-
-        UserModel userChange = _mapper.Map<UserModel>(model);
+    private async Task<UserModel?> Update(UpdateAdminDTO model, string email)
+    {
 
         UserModel userToChange = await _userManager.FindByEmailAsync(email);
+        _mapper.Map<UpdateAdminDTO, UserModel>(model, userToChange);
 
-        userToChange.Email = userChange.Email;
-        userToChange.UserName = userChange.UserName;
-        userToChange.PhoneNumber = userChange.PhoneNumber;
-        userToChange.BirthDate = userChange.BirthDate;
         if (model.Password is not null)
         {
             userToChange.PasswordHash = _password.HashPassword(userToChange, model.Password);
@@ -262,5 +258,5 @@ public class AdminController : ControllerBase
 
         return userToChange;
 
-    } 
+    }
 }
