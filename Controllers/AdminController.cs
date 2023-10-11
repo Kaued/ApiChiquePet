@@ -68,9 +68,9 @@ public class AdminController : ControllerBase
                 return (user is not null) ? Ok(user) : Unauthorized();
             }
             else
-            {   
+            {
                 var roles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(emailToken));
-                var checkRoles= roles.Contains("Super Admin");
+                var checkRoles = roles.Contains("Super Admin");
 
                 if (checkRoles)
                 {
@@ -138,103 +138,57 @@ public class AdminController : ControllerBase
     public async Task<ActionResult> UpdateUser([FromBody] UpdateAdminDTO model, string email)
     {
         var identity = HttpContext.User.Identity as ClaimsIdentity;
-        if (identity is not null)
-        {
-            IEnumerable<Claim> claims = identity.Claims;
-            string emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault().Value;
-            if (emailToken is not null && email == emailToken)
-            {
-                UserModel userChange = _mapper.Map<UserModel>(model);
-
-                UserModel userToChange = await _userManager.FindByEmailAsync(email);
-
-                userToChange.Email = userChange.Email;
-                userToChange.UserName = userChange.UserName;
-                userToChange.PhoneNumber = userChange.PhoneNumber;
-                userToChange.BirthDate = userChange.BirthDate;
-                if (model.Password is not null)
-                {
-                    userToChange.PasswordHash = _password.HashPassword(userToChange, model.Password);
-                }
-
-                var result = await _userManager.UpdateAsync(userToChange);
-
-                if (!result.Succeeded)
-                {
-                    return BadRequest(result.Errors);
-                }
-
-                return Ok(userToChange.Email);
-
-            }
-            else
-            {
-                var user = await _userManager.FindByEmailAsync(emailToken);
-
-                var roles = await _userManager.GetRolesAsync(user);
-
-                if (roles.FirstOrDefault("Super Admin") is not null)
-                {
-
-                    UserModel userChange = _mapper.Map<UserModel>(model);
-
-                    UserModel userToChange = await _userManager.FindByEmailAsync(email);
-
-                    userToChange.Email = userChange.Email;
-                    userToChange.UserName = userChange.UserName;
-                    userToChange.PhoneNumber = userChange.PhoneNumber;
-                    userToChange.BirthDate = userChange.BirthDate;
-                    if (model.Password is not null)
-                    {
-                        userToChange.PasswordHash = _password.HashPassword(userToChange, model.Password);
-                    }
-
-                    var result = await _userManager.UpdateAsync(userToChange);
-
-                    if (!result.Succeeded)
-                    {
-                        return BadRequest(result.Errors);
-                    }
-
-                    return Ok(userChange);
-                }
-                else
-                {
-                    return Unauthorized();
-                }
-            }
-        }
-        else
+        if (identity is null)
         {
             return BadRequest();
         }
 
+        IEnumerable<Claim> claims = identity.Claims;
+        string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
+        if (emailToken is null)
+            return BadRequest("Esqeuceu o email amigo");
+
+        if ( email != emailToken)
+        {
+            var user = await _userManager.FindByEmailAsync(emailToken);
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var isNotSuperAdmin = roles.FirstOrDefault("Super Admin") is null;
+            if (isNotSuperAdmin)
+            {
+                return Unauthorized();
+            }
+
+        }
+        
+        var updateResult = await Update(model, email);
+
+        return updateResult is not null ? Ok(updateResult.Email) : BadRequest();
+
+        
     }
 
     [HttpDelete("{email}")]
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin")]
     public async Task<ActionResult> DeleteUser(string email)
     {
-        UserModel user = await _userManager.FindByEmailAsync(email);
+        UserModel? user = await _userManager.FindByEmailAsync(email);
 
-        if (user is not null)
-        {
-
-            var result = await _userManager.DeleteAsync(user);
-
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
-            else
-            {
-                return Ok(user.Email);
-            }
-        }
-        else
+        if (user is null)
         {
             ModelState.AddModelError("email", "Usuario não encontrado");
             return BadRequest(ModelState);
+        }
+
+        var result = await _userManager.DeleteAsync(user);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+        else
+        {
+            return Ok(user.Email);
         }
     }
 
@@ -283,4 +237,30 @@ public class AdminController : ControllerBase
             return BadRequest(ModelState);
         }
     }
+
+    private async Task<UserModel?> Update(UpdateAdminDTO model, string email){
+
+        UserModel userChange = _mapper.Map<UserModel>(model);
+
+        UserModel userToChange = await _userManager.FindByEmailAsync(email);
+
+        userToChange.Email = userChange.Email;
+        userToChange.UserName = userChange.UserName;
+        userToChange.PhoneNumber = userChange.PhoneNumber;
+        userToChange.BirthDate = userChange.BirthDate;
+        if (model.Password is not null)
+        {
+            userToChange.PasswordHash = _password.HashPassword(userToChange, model.Password);
+        }
+
+        var result = await _userManager.UpdateAsync(userToChange);
+
+        if (!result.Succeeded)
+        {
+            return null;
+        }
+
+        return userToChange;
+
+    } 
 }

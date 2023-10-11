@@ -4087,3 +4087,22 @@ FROM `AspNetUserRoles` AS `a`
 INNER JOIN `AspNetRoles` AS `a0` ON `a`.`RoleId` = `a0`.`Id`
 WHERE `a`.`UserId` = @__userId_0
 Information: 0 - Application is shutting down...
+Information: 14 - Now listening on: http://localhost:5169
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\kaued\Documents\Projects\ApiChiquePet
+Information: 0 - Application is shutting down...
+Information: 14 - Now listening on: http://localhost:5169
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\kaued\Documents\Projects\ApiChiquePet
+Warning: 3 - Failed to determine the https port for redirect.
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 1 - An unhandled exception has occurred while executing the request.
+Information: 0 - Application is shutting down...

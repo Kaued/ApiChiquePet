@@ -1,3 +1,5 @@
+using APICatalogo.Models;
+
 namespace ApiCatalogo.DTOs
 {
 
