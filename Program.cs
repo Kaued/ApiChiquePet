@@ -15,10 +15,29 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NuGet.Common;
+using NuGet.Protocol;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Admin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+        });
+
+    options.AddPolicy("Client",
+        policy =>
+        {
+            policy.WithOrigins("http://www.contoso.com")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -49,8 +68,6 @@ builder.Services.AddSwaggerGen(c =>
                     }
                 });
 });
-
-
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
@@ -58,24 +75,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("Admin",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:5173")
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-        });
-
-    options.AddPolicy("Client",
-        policy =>
-        {
-            policy.WithOrigins("http://www.contoso.com")
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-        });
-});
 
 
 
@@ -138,10 +137,11 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 
+app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors();
 
 app.MapControllers();
 

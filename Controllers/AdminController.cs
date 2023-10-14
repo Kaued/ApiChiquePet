@@ -46,6 +46,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet]
+    [EnableCors("Admin")]
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin")]
     public async Task<ActionResult> GetAllAdmins()
     {
