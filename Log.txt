@@ -12911,3 +12911,4 @@ SELECT `a0`.`Name`
 FROM `AspNetUserRoles` AS `a`
 INNER JOIN `AspNetRoles` AS `a0` ON `a`.`RoleId` = `a0`.`Id`
 WHERE `a`.`UserId` = @__userId_0
+Information: 0 - Application is shutting down...
