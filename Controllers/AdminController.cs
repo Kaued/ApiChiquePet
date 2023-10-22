@@ -47,11 +47,12 @@ public class AdminController : ControllerBase
 
     [HttpGet]
     [EnableCors("Admin")]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin")]
+    [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
     public async Task<ActionResult> GetAllAdmins()
     {
         var users = await _userManager.Users.ToListAsync();
-        return Ok(users);
+        var usersDTO = _mapper.Map<RegisterDTO[]>(users);
+        return Ok(usersDTO);
     }
 
     [HttpGet("{email}")]
