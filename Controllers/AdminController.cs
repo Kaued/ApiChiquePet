@@ -2,6 +2,7 @@ using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ApiCatalogo.DTOs;
+using ApiCatalogo.Pagination;
 using APICatalogo.Models;
 using APICatalogo.Service;
 using APICatalogo.Services;
@@ -15,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 
 namespace ApiCatalogo.Controllers;
 
@@ -48,10 +50,14 @@ public class AdminController : ControllerBase
     [HttpGet]
     [EnableCors("Admin")]
     [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
-    public async Task<ActionResult> GetAllAdmins()
+    public async Task<ActionResult> GetAllAdmins([FromQuery] UsersParameters usersParameters)
     {
-        var users = await _userManager.Users.ToListAsync();
-        var usersDTO = _mapper.Map<RegisterDTO[]>(users);
+        var users = await PageList<UserModel>.ToPageListAsync(_userManager.Users.OrderBy((on) => on.UserName),
+                                                                usersParameters.PageNumber,
+                                                                usersParameters.PageSize);
+        var pagination = _mapper.Map<PaginationDTO>(users);
+        var usersDTO = _mapper.Map<List<RegisterDTO>>(users);
+        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
         return Ok(usersDTO);
     }
 

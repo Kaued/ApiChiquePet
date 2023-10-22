@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiCatalogo.Pagination{
 
@@ -23,6 +24,14 @@ namespace ApiCatalogo.Pagination{
     public static PageList<T> ToPageList (IQueryable<T> source, int pageNumber, int pageSize){
       var count = source.Count();
       var itens = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+      return new PageList<T>(itens, count, pageNumber, pageSize);
+    }
+
+    public async static Task<PageList<T>> ToPageListAsync(IQueryable<T> source, int pageNumber, int pageSize)
+    {
+      var count = source.Count();
+      var itens = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
       return new PageList<T>(itens, count, pageNumber, pageSize);
     }
