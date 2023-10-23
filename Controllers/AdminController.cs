@@ -2,6 +2,7 @@ using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ApiCatalogo.DTOs;
+using ApiCatalogo.DTOs.Admin;
 using ApiCatalogo.Pagination;
 using APICatalogo.Models;
 using APICatalogo.Service;
@@ -56,9 +57,22 @@ public class AdminController : ControllerBase
                                                                 usersParameters.PageNumber,
                                                                 usersParameters.PageSize);
         var pagination = _mapper.Map<PaginationDTO>(users);
-        var usersDTO = _mapper.Map<List<RegisterDTO>>(users);
+        var usersDTO = _mapper.Map<List<ListAdminDTO>>(users);
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
         return Ok(usersDTO);
+    }
+
+    [HttpGet("search/{email}")]
+    [EnableCors("Admin")]
+    [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
+    public async Task<ActionResult> Search(string email){
+        var users = await _userManager.Users
+                        .Where((on)=> on.Email.Contains(email))
+                        .OrderBy((on)=>on.Email)
+                        .ToListAsync();
+        
+        var userDTO = _mapper.Map<List<ListAdminDTO>>(users);
+        return Ok(userDTO);
     }
 
     [HttpGet("{email}")]
