@@ -1,19 +1,23 @@
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using ApiCatalogo.DTOs;
 using ApiCatalogo.DTOs.Admin;
 using ApiCatalogo.Pagination;
+using APICatalogo.Context;
 using APICatalogo.Models;
 using APICatalogo.Service;
 using APICatalogo.Services;
 using AutoMapper;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.Win32;
@@ -29,6 +33,7 @@ public class AdminController : ControllerBase
 {
     private readonly UserManager<UserModel> _userManager;
     private readonly SignInManager<UserModel> _signInManager;
+    private readonly AppDbContext _context;
     private readonly IConfiguration _config;
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
@@ -38,7 +43,7 @@ public class AdminController : ControllerBase
         "Super Admin"
     };
 
-    public AdminController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher)
+    public AdminController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher, AppDbContext context)
     {
         this._userManager = userManager;
         this._signInManager = signInManager;
@@ -46,6 +51,7 @@ public class AdminController : ControllerBase
         this._mapper = mapper;
         this._tokenService = tokenService;
         this._password = passwordHasher;
+        this._context=context;
     }
 
     [HttpGet]
@@ -53,13 +59,25 @@ public class AdminController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
     public async Task<ActionResult> GetAllAdmins([FromQuery] UsersParameters usersParameters)
     {
-        var users = await PageList<UserModel>.ToPageListAsync(_userManager.Users.OrderBy((on) => on.UserName),
+        var users = await PageList<ListAdminDTO>.ToPageListAsync(_userManager.Users.OrderBy((on) => on.UserName)
+                                                                .Join(_context.UserRoles, 
+                                                                    (u)=>u.Id,
+                                                                    (ur)=>ur.UserId, 
+                                                                    (user, ur)=> new {
+                                                                        User=user, 
+                                                                        RoleUser=ur.RoleId})
+                                                                .GroupJoin(_context.Roles,
+                                                                    (ur)=>ur.RoleUser,
+                                                                    (r)=>r.Id,
+                                                                    (ur, role)=> new ListAdminDTO{
+                                                                        User=ur.User,
+                                                                        Role = role.ToList
+                                                                    }),
                                                                 usersParameters.PageNumber,
                                                                 usersParameters.PageSize);
         var pagination = _mapper.Map<PaginationDTO>(users);
-        var usersDTO = _mapper.Map<List<ListAdminDTO>>(users);
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
-        return Ok(usersDTO);
+        return Ok(users);
     }
 
     [HttpGet("search/{email}")]

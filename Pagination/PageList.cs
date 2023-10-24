@@ -20,6 +20,7 @@ namespace ApiCatalogo.Pagination{
 
       AddRange(itens); 
     }  
+    
 
     public static PageList<T> ToPageList (IQueryable<T> source, int pageNumber, int pageSize){
       var count = source.Count();
