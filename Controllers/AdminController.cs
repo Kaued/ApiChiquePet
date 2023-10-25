@@ -59,25 +59,13 @@ public class AdminController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
     public async Task<ActionResult> GetAllAdmins([FromQuery] UsersParameters usersParameters)
     {
-        var users = await PageList<ListAdminDTO>.ToPageListAsync(_userManager.Users.OrderBy((on) => on.UserName)
-                                                                .Join(_context.UserRoles, 
-                                                                    (u)=>u.Id,
-                                                                    (ur)=>ur.UserId, 
-                                                                    (user, ur)=> new {
-                                                                        User=user, 
-                                                                        RoleUser=ur.RoleId})
-                                                                .GroupJoin(_context.Roles,
-                                                                    (ur)=>ur.RoleUser,
-                                                                    (r)=>r.Id,
-                                                                    (ur, role)=> new ListAdminDTO{
-                                                                        User=ur.User,
-                                                                        Role = role.ToList
-                                                                    }),
+        var users = await PageList<UserModel>.ToPageListAsync(_userManager.Users.OrderBy((on) => on.UserName),
                                                                 usersParameters.PageNumber,
                                                                 usersParameters.PageSize);
         var pagination = _mapper.Map<PaginationDTO>(users);
+        var usersDTO = _mapper.Map<List<ListAdminDTO>>(users);
         Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
-        return Ok(users);
+        return Ok(usersDTO);
     }
 
     [HttpGet("search/{email}")]
