@@ -51,7 +51,7 @@ public class AdminController : ControllerBase
         this._mapper = mapper;
         this._tokenService = tokenService;
         this._password = passwordHasher;
-        this._context=context;
+        this._context = context;
     }
 
     [HttpGet]
@@ -59,7 +59,27 @@ public class AdminController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
     public async Task<ActionResult> GetAllAdmins([FromQuery] UsersParameters usersParameters)
     {
-        var users = await PageList<UserModel>.ToPageListAsync(_userManager.Users.OrderBy((on) => on.UserName),
+        var users = await PageList<UserModel>.ToPageListAsync(_userManager.Users.OrderBy((on) => on.UserName)
+                                                                .Join(
+                                                                    _context.UserRoles,
+                                                                    (u) => u.Id,
+                                                                    (ur) => ur.UserId,
+                                                                    (u, ur) => new
+                                                                    {
+                                                                        u,
+                                                                        ur
+                                                                    }
+                                                                ).Join(
+                                                                    _context.Roles,
+                                                                    (ur) => ur.ur.RoleId,
+                                                                    (r) => r.Id,
+                                                                    (ur, r) => new
+                                                                    {
+                                                                        User = ur.u,
+                                                                        Role = r
+                                                                    }
+                                                                ).Where((r) => r.Role.Name == "Seller")
+                                                                .Select((u) => u.User as UserModel),
                                                                 usersParameters.PageNumber,
                                                                 usersParameters.PageSize);
         var pagination = _mapper.Map<PaginationDTO>(users);
@@ -71,12 +91,33 @@ public class AdminController : ControllerBase
     [HttpGet("search/{email}")]
     [EnableCors("Admin")]
     [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
-    public async Task<ActionResult> Search(string email){
+    public async Task<ActionResult> Search(string email)
+    {
         var users = await _userManager.Users
-                        .Where((on)=> on.Email.Contains(email))
-                        .OrderBy((on)=>on.Email)
+                        .Where((on) => on.Email.Contains(email))
+                        .OrderBy((on) => on.Email)
+                        .Join(
+                            _context.UserRoles,
+                            (u) => u.Id,
+                            (ur) => ur.UserId,
+                            (u, ur) => new
+                            {
+                                u,
+                                ur
+                            }
+                        ).Join(
+                            _context.Roles,
+                            (ur) => ur.ur.RoleId,
+                            (r) => r.Id,
+                            (ur, r) => new
+                            {
+                                User = ur.u,
+                                Role = r
+                            }
+                        ).Where((r) => r.Role.Name == "Seller")
+                        .Select((u) => u.User as UserModel)
                         .ToListAsync();
-        
+
         var userDTO = _mapper.Map<List<ListAdminDTO>>(users);
         return Ok(userDTO);
     }
