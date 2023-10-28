@@ -20,7 +20,7 @@ public class Produto
   public decimal Preco {get; set;}
   [Required]
   [StringLength(300)]
-  public string? ImagemUrl{get; set;}
+  public ImagemUrl imagemUrl {get; set;}
   public float Estoque{get; set;}
   public DateTime? DataCadastro{get; set;}
   public int CategoriaId {get; set;}
