@@ -6,6 +6,7 @@ using ApiCatalogo.Loggin;
 using APICatalogo.Context;
 using APICatalogo.Filters;
 using APICatalogo.Models;
+using APICatalogo.Observer;
 using APICatalogo.Service;
 using APICatalogo.Services;
 using AutoMapper;
@@ -115,7 +116,8 @@ builder.Services.AddScoped<ApiLogginFilter>();
 
 builder.Services.AddIdentity<UserModel, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddErrorDescriber<IdentityPortugueseMessages>();
 
 builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
 {

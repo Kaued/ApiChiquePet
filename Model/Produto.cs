@@ -26,7 +26,7 @@ public class Produto
   public decimal Largura {get; set;}
   [Required]
   [StringLength(300)]
-  public ImagemUrl imagemUrl {get; set;}
+  // public ImagemUrl imagemUrl {get; set;}
   public float Estoque{get; set;}
   public DateTime? DataCadastro{get; set;}
   public int CategoriaId {get; set;}
