@@ -16,8 +16,14 @@ public class Produto
   [StringLength(300)]
   public string? Descricao {get; set;}
   [Required]
-  [Column(TypeName = "decimal(10, 2)")]
+  [Column(TypeName = "decimal(7, 2)")]
   public decimal Preco {get; set;}
+  [Required]
+  [Column(TypeName = "decimal(6, 2)")]
+  public decimal Altura {get; set;}
+  [Required]
+  [Column(TypeName = "decimal(6, 2)")]
+  public decimal Largura {get; set;}
   [Required]
   [StringLength(300)]
   public ImagemUrl imagemUrl {get; set;}
