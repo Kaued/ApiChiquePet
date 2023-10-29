@@ -132,9 +132,12 @@ public class AdminController : ControllerBase
             IEnumerable<Claim> claims = identity.Claims;
             string emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault().Value;
             var user = await _userManager.FindByEmailAsync(email);
+
+            var userDTO = _mapper.Map<ListAdminDTO>(user);
+            
             if (emailToken is not null && email == emailToken)
-            {
-                return (user is not null) ? Ok(user) : Unauthorized();
+            {   
+                return (user is not null) ? Ok(userDTO) : Unauthorized();
             }
             else
             {
@@ -142,9 +145,9 @@ public class AdminController : ControllerBase
                 var checkRoles = roles.Contains("Super Admin");
 
                 if (checkRoles)
-                {
+                {   
                     ModelState.AddModelError("email", "Usuario não encontrado");
-                    return (user is not null) ? Ok(roles) : BadRequest(ModelState);
+                    return (user is not null) ? Ok(userDTO) : BadRequest(ModelState);
                 }
                 else
                 {
