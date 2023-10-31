@@ -3,9 +3,9 @@ using APICatalogo.Models;
 namespace ApiCatalogo.DTOs
 {
 
-  public class CategoriaDTO
+  public class CategoryDTO
   {
-    public int CategoriaId { get; set; }
+    public int CategoryId { get; set; }
     public string? Nome { get; set; }
     public string? ImagemUrl { get; set; }
     public ICollection<ProdutoDTO>? Produtos {get; set;}
