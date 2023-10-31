@@ -70,7 +70,15 @@ namespace ApiCatalogo.Controllers
             var category = _mapper.Map<Category>(categoryDTO);
             if(category is null){
                 return BadRequest();
-            }	
+            }
+
+            var existCategory = _context.Categories.Where((cat)=>cat.Name==category.Name);
+
+            if(existCategory is not null){
+                ModelState.AddModelError("name", "Nome da categoria já existe!");
+                return BadRequest(ModelState);
+            }
+            
             _context.Categories.Add(category);
             _context.SaveChanges();
             
