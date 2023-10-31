@@ -186,7 +186,7 @@ public class AdminController : ControllerBase
         }
     }
 
-    [HttpPost("register")]
+    [HttpPost()]
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin")]
     public async Task<ActionResult> RegisterUser([FromBody] RegisterDTO model)
     {
