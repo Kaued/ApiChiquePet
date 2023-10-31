@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using APICatalogo.Models;
 
 namespace ApiCatalogo.DTOs
@@ -6,8 +7,10 @@ namespace ApiCatalogo.DTOs
   public class CategoryDTO
   {
     public int CategoryId { get; set; }
-    public string? Nome { get; set; }
-    public string? ImagemUrl { get; set; }
+    [Required]
+    public string? Name { get; set; }
+    [Required]
+    public string? ImageUrl { get; set; }
     public ICollection<ProdutoDTO>? Produtos {get; set;}
   }
 }
