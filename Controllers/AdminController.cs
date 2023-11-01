@@ -94,7 +94,7 @@ public class AdminController : ControllerBase
     public async Task<ActionResult> Search(string email)
     {
         var users = await _userManager.Users
-                        .Where((on) => on.Email.Contains(email))
+                        .Where((on) => on.Email.Contains(email.Trim()))
                         .OrderBy((on) => on.Email)
                         .Join(
                             _context.UserRoles,
