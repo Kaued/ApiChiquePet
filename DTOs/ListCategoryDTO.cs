@@ -4,13 +4,13 @@ using APICatalogo.Models;
 namespace ApiCatalogo.DTOs
 {
 
-  public class CategoryDTO
+  public class ListCategoryDTO
   {
     public int CategoryId { get; set; }
     [Required]
     public string? Name { get; set; }
     // [Required]
-    public IFormFile File { get; set; }
+    public string ImageUrl { get; set; }
     public ICollection<ProdutoDTO>? Produtos {get; set;}
   }
 }

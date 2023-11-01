@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using ApiCatalogo.DTOs;
 using ApiCatalogo.Pagination;
@@ -24,10 +26,12 @@ namespace ApiCatalogo.Controllers
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public CategoryController(AppDbContext context, IMapper mapper)
+        private readonly IWebHostEnvironment _enviroment;
+        public CategoryController(AppDbContext context, IMapper mapper, IWebHostEnvironment environment)
         {
             _context = context;
             _mapper = mapper;
+            _enviroment = environment;
         }
 
         [HttpGet]
@@ -52,9 +56,22 @@ namespace ApiCatalogo.Controllers
             var pagination = _mapper.Map<PaginationDTO>(category);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
 
-            return _mapper.Map<List<CategoryDTO>>(category);
+            return Ok(_mapper.Map<List<ListCategoryDTO>>(category));
         }
 
+        [HttpGet("search/{search}")]
+        public ActionResult<IEnumerable<CategoryDTO>> Search(string search)
+        {
+
+            if (search == "")
+            {
+                return BadRequest();
+            }
+
+            var category = _context.Categories.AsNoTracking().Where((cat) => cat.Name.ToLower().Contains(search.Trim().ToLower())).ToList();
+
+            return Ok(_mapper.Map<List<ListCategoryDTO>>(category));
+        }
         [HttpGet("produtos")]
         public ActionResult<IEnumerable<CategoryDTO>> GetCategoryProdutos()
         {
@@ -80,7 +97,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CategoryDTO> Post(CategoryDTO categoryDTO)
+        public async Task<ActionResult<CategoryDTO>> Post([FromForm] CategoryDTO categoryDTO)
         {
             var category = _mapper.Map<Category>(categoryDTO);
             if (category is null)
@@ -96,11 +113,30 @@ namespace ApiCatalogo.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Categories.Add(category);
-            _context.SaveChanges();
+            try
+            {
 
-            var showCategory = _mapper.Map<CategoryDTO>(category);
-            return new CreatedAtRouteResult("ObeterCategory", new { id = category.CategoryId }, showCategory);
+                var fileName = Path.GetFileName(categoryDTO.File.FileName);
+                var path = Path.Combine(_enviroment.WebRootPath, "uploads", fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await categoryDTO.File.CopyToAsync(stream);
+                }
+
+                category.ImageUrl = "uploads/"+fileName;
+
+                _context.Categories.Add(category);
+                _context.SaveChanges();
+
+                var showCategory = _mapper.Map<CategoryDTO>(category);
+                return Ok(showCategory);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
         }
 
         [HttpPut("{id:int}")]
