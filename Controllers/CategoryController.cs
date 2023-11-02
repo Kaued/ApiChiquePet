@@ -121,7 +121,7 @@ namespace ApiCatalogo.Controllers
             {
 
                 var imageUrl = await _saveFile.SaveImage(categoryDTO.File, _environment);
-                 
+
                 category.ImageUrl = imageUrl;
                 _context.Categories.Add(category);
                 _context.SaveChanges();
@@ -138,21 +138,33 @@ namespace ApiCatalogo.Controllers
 
         [HttpPut("{id:int}")]
 
-        public ActionResult<CategoryDTO> Put(int id, CategoryDTO categoryDTO)
+        public async Task<ActionResult<CategoryDTO>> Put(int id, [FromForm]CategoryDTO categoryDTO)
         {
-            if (id != categoryDTO.CategoryId)
-            {
+            var category = _context.Categories.Where((c)=>c.CategoryId==id).FirstOrDefault();   
+
+            if(category is null){
                 return BadRequest();
             }
+            try
+            {
+                var imageUrl = await _saveFile.SaveImage(categoryDTO.File, _environment);
+                _saveFile.RemoveFile(category.ImageUrl!, _environment);
 
-            var category = _mapper.Map<Category>(categoryDTO);
+                category.ImageUrl= imageUrl;
+                category.Name= categoryDTO.Name;
+                
+                _context.Categories.Entry(category).State = EntityState.Modified;
+                _context.SaveChanges();
 
-            _context.Categories.Entry(category).State = EntityState.Modified;
-            _context.SaveChanges();
+                var showCategory = _mapper.Map<ListCategoryDTO>(category);
+                return Ok(showCategory);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
 
-            var showCategory = _mapper.Map<ListCategoryDTO>(category);
 
-            return Ok(showCategory);
         }
 
         [HttpDelete("{id:int}")]
@@ -162,10 +174,13 @@ namespace ApiCatalogo.Controllers
             if (category is null)
             {
                 return BadRequest();
-            }   
-            try{
+            }
+            try
+            {
                 _saveFile.RemoveFile(category.ImageUrl!, _environment);
-            }catch (Exception e){
+            }
+            catch (Exception e)
+            {
                 return BadRequest(e);
             }
             _context.Categories.Remove(category);
