@@ -97,7 +97,7 @@ namespace ApiCatalogo.Controllers
                 return NoContent();
             }
 
-            return _mapper.Map<CategoryDTO>(category);
+            return Ok(_mapper.Map<ListCategoryDTO>(category));
         }
 
         [HttpPost]
@@ -150,7 +150,7 @@ namespace ApiCatalogo.Controllers
             _context.Categories.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();
 
-            var showCategory = _mapper.Map<CategoryDTO>(category);
+            var showCategory = _mapper.Map<ListCategoryDTO>(category);
 
             return Ok(showCategory);
         }
