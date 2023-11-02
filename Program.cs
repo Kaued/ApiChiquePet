@@ -93,6 +93,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     ServerVersion.AutoDetect(mySqlConnection)));
 
 builder.Services.AddSingleton<ITokenService>(new TokenService());
+builder.Services.AddSingleton<ISaveFile>(new SaveFile());
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

@@ -8,6 +8,7 @@ using ApiCatalogo.DTOs;
 using ApiCatalogo.Pagination;
 using APICatalogo.Context;
 using APICatalogo.Models;
+using APICatalogo.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -26,12 +27,15 @@ namespace ApiCatalogo.Controllers
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        private readonly IWebHostEnvironment _enviroment;
-        public CategoryController(AppDbContext context, IMapper mapper, IWebHostEnvironment environment)
+        private readonly ISaveFile _saveFile;
+
+        private readonly IWebHostEnvironment _environment;
+        public CategoryController(AppDbContext context, IMapper mapper, IWebHostEnvironment environment, ISaveFile saveFile)
         {
             _context = context;
             _mapper = mapper;
-            _enviroment = environment;
+            _environment = environment;
+            _saveFile = saveFile;
         }
 
         [HttpGet]
@@ -116,16 +120,9 @@ namespace ApiCatalogo.Controllers
             try
             {
 
-                var fileName = Path.GetFileName(categoryDTO.File.FileName);
-                var path = Path.Combine(_enviroment.WebRootPath, "uploads", fileName);
-
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await categoryDTO.File.CopyToAsync(stream);
-                }
-
-                category.ImageUrl = "uploads/"+fileName;
-
+                var imageUrl = await _saveFile.SaveImage(categoryDTO.File, _environment);
+                 
+                category.ImageUrl = imageUrl;
                 _context.Categories.Add(category);
                 _context.SaveChanges();
 
@@ -165,8 +162,12 @@ namespace ApiCatalogo.Controllers
             if (category is null)
             {
                 return BadRequest();
+            }   
+            try{
+                _saveFile.RemoveFile(category.ImageUrl!, _environment);
+            }catch (Exception e){
+                return BadRequest(e);
             }
-
             _context.Categories.Remove(category);
             _context.SaveChanges();
 
