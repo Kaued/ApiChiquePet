@@ -36,8 +36,9 @@ namespace APICatalogo.Services
 
       if(!file.Exists){
         throw new Exception("Arquivo não existe");
-      }
+      }else{
       file.Delete();
+      }
     }
   }
 }

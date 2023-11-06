@@ -138,11 +138,12 @@ namespace ApiCatalogo.Controllers
 
         [HttpPut("{id:int}")]
 
-        public async Task<ActionResult<CategoryDTO>> Put(int id, [FromForm]CategoryDTO categoryDTO)
+        public async Task<ActionResult<CategoryDTO>> Put(int id, [FromForm] CategoryDTO categoryDTO)
         {
-            var category = _context.Categories.Where((c)=>c.CategoryId==id).FirstOrDefault();   
+            var category = _context.Categories.Where((c) => c.CategoryId == id).FirstOrDefault();
 
-            if(category is null){
+            if (category is null)
+            {
                 return BadRequest();
             }
             try
@@ -150,9 +151,9 @@ namespace ApiCatalogo.Controllers
                 var imageUrl = await _saveFile.SaveImage(categoryDTO.File, _environment);
                 _saveFile.RemoveFile(category.ImageUrl!, _environment);
 
-                category.ImageUrl= imageUrl;
-                category.Name= categoryDTO.Name;
-                
+                category.ImageUrl = imageUrl;
+                category.Name = categoryDTO.Name;
+
                 _context.Categories.Entry(category).State = EntityState.Modified;
                 _context.SaveChanges();
 
@@ -175,13 +176,17 @@ namespace ApiCatalogo.Controllers
             {
                 return BadRequest();
             }
-            try
+
+            if (category.ImageUrl != null)
             {
-                _saveFile.RemoveFile(category.ImageUrl!, _environment);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
+                try
+                {
+                    _saveFile.RemoveFile(category.ImageUrl!, _environment);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e);
+                }
             }
             _context.Categories.Remove(category);
             _context.SaveChanges();
