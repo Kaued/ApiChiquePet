@@ -21,6 +21,7 @@ namespace ApiCatalogo.Controllers
 {
     [Route("[controller]")]
     [EnableCors("Admin")]
+    [AllowAnonymous]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -29,17 +30,14 @@ namespace ApiCatalogo.Controllers
 
         private readonly ISaveFile _saveFile;
 
-        private readonly IWebHostEnvironment _environment;
-        public CategoryController(AppDbContext context, IMapper mapper, IWebHostEnvironment environment, ISaveFile saveFile)
+        public CategoryController(AppDbContext context, IMapper mapper, ISaveFile saveFile)
         {
             _context = context;
             _mapper = mapper;
-            _environment = environment;
             _saveFile = saveFile;
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Seller")]
         public ActionResult<IEnumerable<CategoryDTO>> Get([FromQuery] CategoryParameters categoryParameters)
         {
             var category = PageList<Category>.ToPageList(_context.Categories.AsNoTracking().OrderBy(on => on.Name), categoryParameters.PageNumber, categoryParameters.PageSize);
@@ -101,6 +99,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Seller")]
         public async Task<ActionResult<CategoryDTO>> Post([FromForm] CategoryDTO categoryDTO)
         {
             var category = _mapper.Map<Category>(categoryDTO);
@@ -120,7 +119,7 @@ namespace ApiCatalogo.Controllers
             try
             {
 
-                var imageUrl = await _saveFile.SaveImage(categoryDTO.File, _environment);
+                var imageUrl = await _saveFile.SaveImage(categoryDTO.File);
 
                 category.ImageUrl = imageUrl;
                 _context.Categories.Add(category);
@@ -137,7 +136,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpPut("{id:int}")]
-
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Seller")]
         public async Task<ActionResult<CategoryDTO>> Put(int id, [FromForm] CategoryDTO categoryDTO)
         {
             var category = _context.Categories.Where((c) => c.CategoryId == id).FirstOrDefault();
@@ -148,8 +147,8 @@ namespace ApiCatalogo.Controllers
             }
             try
             {
-                var imageUrl = await _saveFile.SaveImage(categoryDTO.File, _environment);
-                _saveFile.RemoveFile(category.ImageUrl!, _environment);
+                var imageUrl = await _saveFile.SaveImage(categoryDTO.File);
+                _saveFile.RemoveFile(category.ImageUrl!);
 
                 category.ImageUrl = imageUrl;
                 category.Name = categoryDTO.Name;
@@ -169,6 +168,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Seller")]
         public ActionResult<CategoryDTO> Delete(int id)
         {
             var category = _context.Categories.FirstOrDefault(category => category.CategoryId == id);
@@ -181,7 +181,7 @@ namespace ApiCatalogo.Controllers
             {
                 try
                 {
-                    _saveFile.RemoveFile(category.ImageUrl!, _environment);
+                    _saveFile.RemoveFile(category.ImageUrl!);
                 }
                 catch (Exception e)
                 {

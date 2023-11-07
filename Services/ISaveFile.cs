@@ -4,8 +4,8 @@ namespace APICatalogo.Services{
 
   public interface ISaveFile{
 
-    public Task<string> SaveImage(IFormFile file, IWebHostEnvironment _environment);
+    public Task<string> SaveImage(IFormFile file);
 
-    public void RemoveFile (string path, IWebHostEnvironment _environment);
+    public void RemoveFile (string path);
   }
 }

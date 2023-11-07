@@ -7,7 +7,11 @@ namespace APICatalogo.Services
 
   public class SaveFile : ISaveFile
   {
-    public async Task<string> SaveImage(IFormFile file, IWebHostEnvironment _environment)
+    private readonly IWebHostEnvironment _environment;
+    public SaveFile (IWebHostEnvironment environment){
+        _environment=environment;
+    }
+    public async Task<string> SaveImage(IFormFile file)
     {
       var extension = Path.GetExtension(file.FileName);
 
@@ -29,7 +33,7 @@ namespace APICatalogo.Services
       return result;
     }
 
-    public void RemoveFile(string path, IWebHostEnvironment _environment)
+    public void RemoveFile(string path)
     {
       var filePath = _environment.WebRootPath+"/"+path;
       FileInfo file = new FileInfo(filePath);
