@@ -1,4 +1,4 @@
-using ApiCatalogo.DTOs.Admin;
+using ApiCatalogo.DTOs.Users;
 using ApiCatalogo.Pagination;
 using APICatalogo.Models;
 using AutoMapper;
@@ -16,10 +16,10 @@ namespace ApiCatalogo.DTOs.Mappings
       CreateMap<Category, ListCategoryDTO>().ReverseMap();
 
       // Admin
-      CreateMap<UserModel, RegisterDTO>().ReverseMap();
-      CreateMap<UserModel, ListAdminDTO>().ReverseMap();
-      CreateMap<UserModel, UpdateAdminDTO>().ReverseMap();
-      CreateMap<UserModel, LoginDTO>().ReverseMap();
+      CreateMap<UserModel, RegisterUserDTO>().ReverseMap();
+      CreateMap<UserModel, ListUserDTO>().ReverseMap();
+      CreateMap<UserModel, UpdateUserDTO>().ReverseMap();
+      CreateMap<UserModel, LoginUserDTO>().ReverseMap();
 
       // Pagination
       CreateMap(typeof(PageList<>), typeof(PaginationDTO)).ReverseMap();

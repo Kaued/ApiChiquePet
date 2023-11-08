@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiCatalogo.DTOs.Admin
+namespace ApiCatalogo.DTOs.Users
 {
 
-  public class LoginDTO
+  public class LoginUserDTO
   { 
     [Required]  
     public string? Email { get; set; }

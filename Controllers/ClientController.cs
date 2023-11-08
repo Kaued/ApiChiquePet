@@ -28,8 +28,8 @@ namespace ApiCatalogo.Controllers;
 [Route("[controller]")]
 [EnableCors("Admin")]
 [ApiController]
-[Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin,Seller")]
-public class AdminController : ControllerBase
+[Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin,Seller,Client")]
+public class ClientController : ControllerBase
 {
     private readonly UserManager<UserModel> _userManager;
     private readonly SignInManager<UserModel> _signInManager;
@@ -39,11 +39,12 @@ public class AdminController : ControllerBase
     private readonly ITokenService _tokenService;
     private readonly IPasswordHasher<UserModel> _password;
     private readonly IList<string> rolesAccepts = new List<string>(){
+        "Client",
         "Seller",
         "Super Admin"
     };
 
-    public AdminController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher, AppDbContext context)
+    public ClientController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher, AppDbContext context)
     {
         this._userManager = userManager;
         this._signInManager = signInManager;
@@ -52,74 +53,6 @@ public class AdminController : ControllerBase
         this._tokenService = tokenService;
         this._password = passwordHasher;
         this._context = context;
-    }
-
-    [HttpGet]
-    [EnableCors("Admin")]
-    [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
-    public async Task<ActionResult> GetAllAdmins([FromQuery] UsersParameters usersParameters)
-    {
-        var users = await PageList<UserModel>.ToPageListAsync(_userManager.Users.OrderBy((on) => on.UserName)
-                                                                .Join(
-                                                                    _context.UserRoles,
-                                                                    (u) => u.Id,
-                                                                    (ur) => ur.UserId,
-                                                                    (u, ur) => new
-                                                                    {
-                                                                        u,
-                                                                        ur
-                                                                    }
-                                                                ).Join(
-                                                                    _context.Roles,
-                                                                    (ur) => ur.ur.RoleId,
-                                                                    (r) => r.Id,
-                                                                    (ur, r) => new
-                                                                    {
-                                                                        User = ur.u,
-                                                                        Role = r
-                                                                    }
-                                                                ).Where((r) => r.Role.Name == "Seller")
-                                                                .Select((u) => u.User as UserModel),
-                                                                usersParameters.PageNumber,
-                                                                usersParameters.PageSize);
-        var pagination = _mapper.Map<PaginationDTO>(users);
-        var usersDTO = _mapper.Map<List<ListUserDTO>>(users);
-        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
-        return Ok(usersDTO);
-    }
-
-    [HttpGet("search/{email}")]
-    [EnableCors("Admin")]
-    [Authorize(AuthenticationSchemes = "Bearer ", Roles = "Super Admin")]
-    public async Task<ActionResult> Search(string email)
-    {
-        var users = await _userManager.Users
-                        .Where((on) => on.Email.Contains(email.Trim()))
-                        .OrderBy((on) => on.Email)
-                        .Join(
-                            _context.UserRoles,
-                            (u) => u.Id,
-                            (ur) => ur.UserId,
-                            (u, ur) => new
-                            {
-                                u,
-                                ur
-                            }
-                        ).Join(
-                            _context.Roles,
-                            (ur) => ur.ur.RoleId,
-                            (r) => r.Id,
-                            (ur, r) => new
-                            {
-                                User = ur.u,
-                                Role = r
-                            }
-                        ).Where((r) => r.Role.Name == "Seller")
-                        .Select((u) => u.User as UserModel)
-                        .ToListAsync();
-
-        var userDTO = _mapper.Map<List<ListUserDTO>>(users);
-        return Ok(userDTO);
     }
 
     [HttpGet("{email}")]
@@ -134,9 +67,9 @@ public class AdminController : ControllerBase
             var user = await _userManager.FindByEmailAsync(email);
 
             var userDTO = _mapper.Map<ListUserDTO>(user);
-            
+
             if (emailToken is not null && email == emailToken)
-            {   
+            {
                 return (user is not null) ? Ok(userDTO) : Unauthorized();
             }
             else
@@ -145,7 +78,7 @@ public class AdminController : ControllerBase
                 var checkRoles = roles.Contains("Super Admin");
 
                 if (checkRoles)
-                {   
+                {
                     ModelState.AddModelError("email", "Usuario não encontrado");
                     return (user is not null) ? Ok(userDTO) : BadRequest(ModelState);
                 }
@@ -161,33 +94,9 @@ public class AdminController : ControllerBase
         }
     }
 
-    [HttpGet("roles")]
-    public async Task<ActionResult> GetAllRolesUser()
-    {
-        var identity = HttpContext.User.Identity as ClaimsIdentity;
-        if (identity is not null)
-        {
-            IEnumerable<Claim> claims = identity.Claims;
-            string email = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault().Value;
-            if (email is not null)
-            {
-                var user = await _userManager.FindByEmailAsync(email);
-                var roles = await _userManager.GetRolesAsync(user);
-                return Ok(roles);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-        else
-        {
-            return BadRequest();
-        }
-    }
 
     [HttpPost()]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin")]
+    [AllowAnonymous]
     public async Task<ActionResult> RegisterUser([FromBody] RegisterUserDTO model)
     {
         UserModel user = _mapper.Map<UserModel>(model);
@@ -199,7 +108,7 @@ public class AdminController : ControllerBase
             return BadRequest(result.Errors);
         }
 
-        await _userManager.AddToRoleAsync(user, "Seller");
+        await _userManager.AddToRoleAsync(user, "Client");
 
         await _signInManager.SignInAsync(user, false);
 
@@ -241,9 +150,24 @@ public class AdminController : ControllerBase
     }
 
     [HttpDelete("{email}")]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin")]
     public async Task<ActionResult> DeleteUser(string email)
     {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        if (identity is null)
+        {
+            return BadRequest();
+        }
+
+        IEnumerable<Claim> claims = identity.Claims;
+        string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
+        if (emailToken is null)
+            return BadRequest("Esqeuceu o email amigo");
+
+        if (email != emailToken)
+        {
+            return Unauthorized();
+        }
+        
         UserModel? user = await _userManager.FindByEmailAsync(email);
 
         if (user is null)

@@ -46,15 +46,7 @@ namespace ApiCatalogo.Controllers
             {
                 return NoContent();
             }
-            var metadata = new
-            {
-                category.TotalCount,
-                category.PageSize,
-                category.TotalPages,
-                category.HasNext,
-                category.HasPrevious
-            };
-
+            
             var pagination = _mapper.Map<PaginationDTO>(category);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
 
