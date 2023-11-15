@@ -1,3 +1,4 @@
 {
-  "dotnet.defaultSolution": "ApiCatalogo.sln"
+  "dotnet.defaultSolution": "ApiCatalogo.sln",
+  "cSpell.language": "en,pt-BR"
 }

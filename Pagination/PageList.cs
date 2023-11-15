@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApiCatalogo.Pagination{
+namespace ApiCatalogo.Pagination
+{
 
-  public class PageList<T> : List<T>{
+    public class PageList<T> : List<T>{
     public int CurrentPage{get; set;}
     public int TotalPages{get; set;}
     public int PageSize{get; set;}

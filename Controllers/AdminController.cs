@@ -1,26 +1,16 @@
-using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 using ApiCatalogo.DTOs;
 using ApiCatalogo.DTOs.Users;
 using ApiCatalogo.Pagination;
 using APICatalogo.Context;
 using APICatalogo.Models;
 using APICatalogo.Service;
-using APICatalogo.Services;
 using AutoMapper;
-using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 
 namespace ApiCatalogo.Controllers;

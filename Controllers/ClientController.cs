@@ -1,27 +1,14 @@
-using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 using ApiCatalogo.DTOs;
 using ApiCatalogo.DTOs.Users;
-using ApiCatalogo.Pagination;
 using APICatalogo.Context;
 using APICatalogo.Models;
 using APICatalogo.Service;
-using APICatalogo.Services;
 using AutoMapper;
-using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.Win32;
-using Newtonsoft.Json;
 
 namespace ApiCatalogo.Controllers;
 
@@ -161,18 +148,18 @@ public class ClientController : ControllerBase
         IEnumerable<Claim> claims = identity.Claims;
         string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
         if (emailToken is null)
-            return BadRequest("Esqeuceu o email amigo");
+            return BadRequest("Usuário Invalido");
 
         if (email != emailToken)
         {
             return Unauthorized();
         }
-        
+
         UserModel? user = await _userManager.FindByEmailAsync(email);
 
         if (user is null)
         {
-            ModelState.AddModelError("email", "Usuario não encontrado");
+            ModelState.AddModelError("email", "Usuário não encontrado");
             return BadRequest(ModelState);
         }
 

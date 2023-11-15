@@ -1,11 +1,7 @@
-
-using System.Security.Cryptography;
-using System.Text;
-
 namespace APICatalogo.Services
 {
 
-  public class SaveFile : ISaveFile
+    public class SaveFile : ISaveFile
   {
     private readonly IWebHostEnvironment _environment;
     public SaveFile (IWebHostEnvironment environment){

@@ -1,5 +1,3 @@
-using System.Net;
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApiCatalogo.Controllers
 {
-  [Route("download")]
+    [Route("download")]
   [EnableCors("Admin")]
   [ApiController]
   [AllowAnonymous]
@@ -33,7 +31,7 @@ namespace ApiCatalogo.Controllers
             if (file.Exists)
             { 
                 var stream = new FileStream(filePath, FileMode.Open);
-                return File(stream, "aplication/octet-stream", fileName);
+                return File(stream, "application/octet-stream", fileName);
             }
             return NotFound(filePath);
         }
