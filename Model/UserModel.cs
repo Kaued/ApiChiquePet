@@ -8,10 +8,10 @@ namespace APICatalogo.Models;
 public class UserModel : IdentityUser
 {  
   public UserModel(){
-    Address = new Collection<AddressModel>();
+    Address = new Collection<Address>();
   }
   [Required]
   public DateTime BirthDate {get; set;}
 
-  public ICollection<AddressModel> Address {get; set;}
+  public ICollection<Address> Address {get; set;}
 }

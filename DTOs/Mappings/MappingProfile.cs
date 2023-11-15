@@ -21,6 +21,10 @@ namespace ApiCatalogo.DTOs.Mappings
       CreateMap<UserModel, UpdateUserDTO>().ReverseMap();
       CreateMap<UserModel, LoginUserDTO>().ReverseMap();
 
+      // Address
+      CreateMap<Address, AddressDTO>().ReverseMap();
+      CreateMap<Address, ListAddressDTO>().ReverseMap();
+
       // Pagination
       CreateMap(typeof(PageList<>), typeof(PaginationDTO)).ReverseMap();
     }

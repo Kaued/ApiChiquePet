@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiCatalogo.Controllers;
 
@@ -175,16 +176,65 @@ public class ClientController : ControllerBase
         }
     }
 
+    [HttpGet("address/{email}")]
+    public async Task<ActionResult> GetAddress(string email)
+    {
+
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+        if (identity is null)
+        {
+            return BadRequest();
+        }
+
+        IEnumerable<Claim> claims = identity.Claims;
+
+        var userAddress = await _userManager.FindByEmailAsync(email);
+
+        if(userAddress is null){
+            return NotFound();
+        }
+
+        string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
+        var address = await _context.Address.Include((a) => a.User).Where((a) => a.User!.Email == email).ToListAsync();
+
+        if (emailToken is null && address is null)
+        {
+            return Unauthorized();
+        }
+
+        if (address is null)
+        {
+            return NotFound();
+        }
+
+        if (userAddress.Email != emailToken)
+        {
+            var user = await _userManager.FindByEmailAsync(emailToken!);
+
+            var roles = await _userManager.GetRolesAsync(user!);
+            var isNotSuperAdmin = roles.FirstOrDefault("Admin") is null;
+            if (isNotSuperAdmin)
+            {
+                return Unauthorized();
+            }
+
+        }
+
+        var addressDTO = _mapper.Map<List<ListAddressDTO>>(address);
+        return Ok(addressDTO);
+    }
+
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<ActionResult> LoginUser([FromBody] LoginUserDTO model)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
+        var user = await _userManager.FindByEmailAsync(model.Email!);
 
         if (user is not null)
         {
             var result = await _signInManager.PasswordSignInAsync(user,
-            model.Password, isPersistent: false, lockoutOnFailure: false);
+            model.Password!, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
@@ -194,9 +244,9 @@ public class ClientController : ControllerBase
                 if (rolesAccepts.Any(x => userRoles.Any(y => x == y)))
                 {
 
-                    TokenDTO token = _tokenService.GerarToken(_config["Jwt:Key"],
-                                                                _config["TokenConfigurantion:Issuer"],
-                                                                _config["TokenConfigurantion:Audience"],
+                    TokenDTO token = _tokenService.GerarToken(_config["Jwt:Key"]!,
+                                                                _config["TokenConfigurantion:Issuer"]!,
+                                                                _config["TokenConfigurantion:Audience"]!,
                                                                 user,
                                                                 userRoles);
 
