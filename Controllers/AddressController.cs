@@ -14,32 +14,19 @@ using Microsoft.EntityFrameworkCore;
 namespace ApiCatalogo.Controllers;
 
 [Route("[controller]")]
-[EnableCors("Admin,Client")]
+[EnableCors("Admin")]
 [ApiController]
 [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin,Seller,Client")]
 public class AddressController : ControllerBase
 {
     private readonly UserManager<UserModel> _userManager;
-    private readonly SignInManager<UserModel> _signInManager;
     private readonly AppDbContext _context;
-    private readonly IConfiguration _config;
     private readonly IMapper _mapper;
-    private readonly ITokenService _tokenService;
-    private readonly IPasswordHasher<UserModel> _password;
-    private readonly IList<string> rolesAccepts = new List<string>(){
-        "Client",
-        "Seller",
-        "Super Admin"
-    };
 
-    public AddressController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher, AppDbContext context)
+    public AddressController(UserManager<UserModel> userManager, IMapper mapper, AppDbContext context)
     {
-        this._userManager = userManager;
-        this._signInManager = signInManager;
-        this._config = (IConfigurationRoot)config;
+        this._userManager = userManager;;
         this._mapper = mapper;
-        this._tokenService = tokenService;
-        this._password = passwordHasher;
         this._context = context;
     }
 

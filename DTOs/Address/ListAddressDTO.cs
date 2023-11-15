@@ -7,6 +7,8 @@ namespace ApiCatalogo
 
   public class ListAddressDTO
   {
+    public int AddressId { get; set; }
+
     [Required]
     [StringLength(8)]
     public string? Cep { get; set; }

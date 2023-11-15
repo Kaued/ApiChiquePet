@@ -196,7 +196,7 @@ public class ClientController : ControllerBase
         }
 
         string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
-        var address = await _context.Address.Include((a) => a.User).Where((a) => a.User!.Email == email).ToListAsync();
+        var address = await _context.Address.Include((a) => a.User).Where((a) => a.User!.Email == email).AsNoTracking().ToListAsync();
 
         if (emailToken is null && address is null)
         {
