@@ -15,6 +15,8 @@ public class AppDbContext : IdentityDbContext<UserModel>
   public DbSet<Product> Products { get; set; }
   public DbSet<ImageUrl> ImageUrl { get; set; }
 
+  public DbSet<Address> Address {get; set;}
+
   protected override void OnModelCreating(ModelBuilder model)
   {
     var roles = this.SeedRoles(model);

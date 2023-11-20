@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 using APICatalogo.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace ApiCatalogo.DTOs.Admin
+namespace ApiCatalogo.DTOs.Users
 {
 
-  public class ListAdminDTO
+  public class ListUserDTO
   {
     public string UserName { get; set; }
     public string Email { get; set; }

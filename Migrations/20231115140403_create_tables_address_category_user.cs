@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiCatalogo.Migrations
 {
     /// <inheritdoc />
-    public partial class create_user_role_admin : Migration
+    public partial class create_tables_address_category_user : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -73,19 +73,19 @@ namespace ApiCatalogo.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Categorias",
+                name: "Categories",
                 columns: table => new
                 {
-                    CategoriaId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    Name = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ImagemUrl = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    ImageUrl = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categorias", x => x.CategoriaId);
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -115,10 +115,10 @@ namespace ApiCatalogo.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AddressModel",
+                name: "Address",
                 columns: table => new
                 {
-                    AdressId = table.Column<int>(type: "int", nullable: false)
+                    AddressId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Cep = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -131,42 +131,17 @@ namespace ApiCatalogo.Migrations
                     District = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Number = table.Column<int>(type: "int", nullable: false),
-                    Complent = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: true)
+                    Complement = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Id = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserName = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NormalizedUserName = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    NormalizedEmail = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    SecurityStamp = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AddressModel", x => x.AdressId);
+                    table.PrimaryKey("PK_Address", x => x.AddressId);
                     table.ForeignKey(
-                        name: "FK_AddressModel_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Address_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 })
@@ -284,9 +259,9 @@ namespace ApiCatalogo.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Descricao = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Preco = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    ImagemUrl = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Preco = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
+                    Altura = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    Largura = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
                     Estoque = table.Column<float>(type: "float", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CategoriaId = table.Column<int>(type: "int", nullable: false)
@@ -295,10 +270,10 @@ namespace ApiCatalogo.Migrations
                 {
                     table.PrimaryKey("PK_Produtos", x => x.ProdutoId);
                     table.ForeignKey(
-                        name: "FK_Produtos_Categorias_CategoriaId",
+                        name: "FK_Produtos_Categories_CategoriaId",
                         column: x => x.CategoriaId,
-                        principalTable: "Categorias",
-                        principalColumn: "CategoriaId",
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -308,30 +283,30 @@ namespace ApiCatalogo.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "73a762d9-e514-488b-afe8-2e6ac8aa6a2f", null, "Client", "CLIENT" },
-                    { "79f8db08-c92e-4760-ad3a-f26088d39af3", null, "Seller", "SELLER" },
-                    { "829f3b6e-3d1d-4692-af2a-7ae11e70cb46", null, "Super Admin", "SUPER ADMIN" }
+                    { "1c0fefe9-7453-48f8-aa88-4b2d5ca80a8d", null, "Client", "CLIENT" },
+                    { "85984e41-ccc2-4a49-bbe2-d39c228b4fcb", null, "Super Admin", "SUPER ADMIN" },
+                    { "ffe48cd0-17e5-4bd1-b672-9ca339a51745", null, "Seller", "SELLER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3e63abf9-e8a4-458b-ac64-f8b17f94f746", 0, new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "d6c4cff0-9da2-4bdc-9017-89b12e9ed769", "kauedomingues98@gmail.com", true, false, null, "KAUEDOMINGUES98@GMAIL.COM", "CHIQUE PET", "AQAAAAIAAYagAAAAEA6rE/kh2HD5G5AgiMe4YNt0cwcx+buiknLFE3vHix+JMVKI4tjq1xcn7TxHfyCSlg==", "17996583206", true, "a4061030-8592-4b4b-a0a6-cc50f7773d9a", false, "Chique Pet" });
+                values: new object[] { "54b62763-6c72-4e5e-a144-6ad61e9f76e2", 0, new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "b94c3010-8cc5-4495-a3e1-4cc3aca475e9", "kauedomingues98@gmail.com", true, false, null, "KAUEDOMINGUES98@GMAIL.COM", "CHIQUE PET", "AQAAAAIAAYagAAAAEJfaY7rG+oKcrFmrWHdoDp1FttzDeHtlUdr/uhV7Otz+zCStt/ip5b8ygg1QZKFqvw==", "17996583206", true, "aa38108d-7c9a-45fa-873e-02f3eadcf8e1", false, "Chique Pet" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "73a762d9-e514-488b-afe8-2e6ac8aa6a2f", "3e63abf9-e8a4-458b-ac64-f8b17f94f746" },
-                    { "79f8db08-c92e-4760-ad3a-f26088d39af3", "3e63abf9-e8a4-458b-ac64-f8b17f94f746" },
-                    { "829f3b6e-3d1d-4692-af2a-7ae11e70cb46", "3e63abf9-e8a4-458b-ac64-f8b17f94f746" }
+                    { "1c0fefe9-7453-48f8-aa88-4b2d5ca80a8d", "54b62763-6c72-4e5e-a144-6ad61e9f76e2" },
+                    { "85984e41-ccc2-4a49-bbe2-d39c228b4fcb", "54b62763-6c72-4e5e-a144-6ad61e9f76e2" },
+                    { "ffe48cd0-17e5-4bd1-b672-9ca339a51745", "54b62763-6c72-4e5e-a144-6ad61e9f76e2" }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AddressModel_UserId1",
-                table: "AddressModel",
-                column: "UserId1");
+                name: "IX_Address_UserId",
+                table: "Address",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -380,7 +355,7 @@ namespace ApiCatalogo.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AddressModel");
+                name: "Address");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -407,7 +382,7 @@ namespace ApiCatalogo.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Categorias");
+                name: "Categories");
         }
     }
 }

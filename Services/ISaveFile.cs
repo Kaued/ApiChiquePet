@@ -1,8 +1,7 @@
-using NuGet.Protocol.Core.Types;
+namespace APICatalogo.Services
+{
 
-namespace APICatalogo.Services{
-
-  public interface ISaveFile{
+    public interface ISaveFile{
 
     public Task<string> SaveImage(IFormFile file);
 

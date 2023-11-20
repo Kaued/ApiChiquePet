@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiCatalogo.DTOs.Admin
+namespace ApiCatalogo.DTOs.Users
 {
 
-  public class UpdateAdminDTO
+  public class UpdateUserDTO
   { 
     [Required]
     public string UserName{get; set;}

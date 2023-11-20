@@ -3,9 +3,11 @@ using System.Collections.Concurrent;
 namespace ApiCatalogo.Loggin
 {
 
-  public class CustomLogger: ILogger{
+  public class CustomLogger : ILogger
+  {
     readonly string loggerName;
     readonly CustomLoggerProviderConfiguration loggerConfig;
+    public static object _locked = new object();
 
     public CustomLogger(string name, CustomLoggerProviderConfiguration config)
     {
@@ -34,16 +36,21 @@ namespace ApiCatalogo.Loggin
     private void EscreverTextoNoArquivo(string mensagem)
     {
       string caminhoArquivoLog = @"Log.txt";
-      using (StreamWriter streamWriter = new StreamWriter(caminhoArquivoLog, true))
+      lock (_locked)
       {
-        try
+
+        using (StreamWriter streamWriter = new StreamWriter(caminhoArquivoLog, true))
+
         {
-          streamWriter.WriteLine(mensagem);
-          streamWriter.Close();
-        }
-        catch (Exception)
-        {
-          throw;
+          try
+          {
+            streamWriter.WriteLine(mensagem);
+            streamWriter.Close();
+          }
+          catch (Exception)
+          {
+            throw;
+          }
         }
       }
     }

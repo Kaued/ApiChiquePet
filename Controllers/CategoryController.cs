@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using ApiCatalogo.DTOs;
 using ApiCatalogo.Pagination;
 using APICatalogo.Context;
@@ -12,7 +6,6 @@ using APICatalogo.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -46,15 +39,7 @@ namespace ApiCatalogo.Controllers
             {
                 return NoContent();
             }
-            var metadata = new
-            {
-                category.TotalCount,
-                category.PageSize,
-                category.TotalPages,
-                category.HasNext,
-                category.HasPrevious
-            };
-
+            
             var pagination = _mapper.Map<PaginationDTO>(category);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
 
