@@ -5,33 +5,35 @@ using System.Text.Json.Serialization;
 
 namespace APICatalogo.Models;
 
-[Table("Produtos")]
-public class Produto
+[Table("Product")]
+public class Product
 {
   // public Produto(){
   //   this.imagemUrl = new Collection<ImagemUrl>();
   // }
   [Key]
-  public int ProdutoId {get; set;}
+  public int ProductId {get; set;}
   [Required]
   [StringLength(300)]
-  public string? Nome {get; set;}
+  public string? Name {get; set;}
   [Required]
   [StringLength(300)]
-  public string? Descricao {get; set;}
+  public string? Description {get; set;}
   [Required]
   [Column(TypeName = "decimal(7, 2)")]
-  public decimal Preco {get; set;}
+  public decimal Price {get; set;}
   [Required]
   [Column(TypeName = "decimal(6, 2)")]
-  public decimal Altura {get; set;}
+  public decimal Height {get; set;}
   [Required]
   [Column(TypeName = "decimal(6, 2)")]
-  public decimal Largura {get; set;}
-  public float Estoque{get; set;}
-  public DateTime? DataCadastro{get; set;}
-  public int CategoriaId {get; set;}
+  public decimal Width {get; set;}
+  [Required]
+  public float Stock {get; set;}
+  public DateTime? DateRegister{get; set;}  
+  public int CategoryId {get; set;}
   [JsonIgnore]
-  public Category? Categoria {get; set;}
-  // public ICollection<ImagemUrl>? imagemUrl {get; set;}
+  public Category? Category {get; set;}
+  [JsonIgnore]
+  public ICollection<ImageUrl>? imageUrl {get; set;}
 }

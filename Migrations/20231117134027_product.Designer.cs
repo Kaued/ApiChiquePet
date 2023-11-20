@@ -3,6 +3,7 @@ using System;
 using APICatalogo.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiCatalogo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231117134027_product")]
+    partial class product
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,8 +160,9 @@ namespace ApiCatalogo.Migrations
                     b.Property<decimal>("Height")
                         .HasColumnType("decimal(6, 2)");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -250,48 +254,22 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "76814f5c-49aa-4253-9059-bd9b0ea14587",
+                            Id = "2bb20f36-e3a0-44e4-b204-cdc9b77db7c1",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "b603f0a8-12f4-40f6-afe2-53573b2b1564",
+                            ConcurrencyStamp = "c231609a-0476-4ffd-9e78-59d03f89bac6",
                             Email = "kauedomingues98@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "KAUEDOMINGUES98@GMAIL.COM",
                             NormalizedUserName = "CHIQUE PET",
-                            PasswordHash = "AQAAAAIAAYagAAAAENPhhF/Yy6MOr7NclvVcEpZBEPUUOdxayNC5Z0KB110k1dztR3vwoqjDKtDbqanrIQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK6Zl0wDiRqsbdHmiC1wEiwRswsGoCnERap7NJF4n2FslmD9xOgC6f1zuLEmAUI9Dg==",
                             PhoneNumber = "17996583206",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "1569b474-845f-441d-8d86-646a415a55d4",
+                            SecurityStamp = "145dcb3d-3d07-4dd4-9536-03108a5aaae1",
                             TwoFactorEnabled = false,
                             UserName = "Chique Pet"
                         });
-                });
-
-            modelBuilder.Entity("ImageUrl", b =>
-                {
-                    b.Property<int>("ImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.HasKey("ImageId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ImageUrl");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -322,19 +300,19 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2c65d55b-0340-4b87-8a83-27f8cdc7ee7f",
+                            Id = "347bd24d-66e5-45c7-ad6c-2b8e403352eb",
                             Name = "Super Admin",
                             NormalizedName = "SUPER ADMIN"
                         },
                         new
                         {
-                            Id = "72aecf26-034f-4b35-a328-10d8e07b0fc1",
+                            Id = "5b52ca37-7b2f-4d94-8e76-49566c4be7bf",
                             Name = "Seller",
                             NormalizedName = "SELLER"
                         },
                         new
                         {
-                            Id = "a098cd71-927e-415f-bfbc-f4daaa936230",
+                            Id = "f614194c-2cdb-44b5-8e3d-cd9fb3ba4afe",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -425,18 +403,18 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "76814f5c-49aa-4253-9059-bd9b0ea14587",
-                            RoleId = "2c65d55b-0340-4b87-8a83-27f8cdc7ee7f"
+                            UserId = "2bb20f36-e3a0-44e4-b204-cdc9b77db7c1",
+                            RoleId = "347bd24d-66e5-45c7-ad6c-2b8e403352eb"
                         },
                         new
                         {
-                            UserId = "76814f5c-49aa-4253-9059-bd9b0ea14587",
-                            RoleId = "72aecf26-034f-4b35-a328-10d8e07b0fc1"
+                            UserId = "2bb20f36-e3a0-44e4-b204-cdc9b77db7c1",
+                            RoleId = "5b52ca37-7b2f-4d94-8e76-49566c4be7bf"
                         },
                         new
                         {
-                            UserId = "76814f5c-49aa-4253-9059-bd9b0ea14587",
-                            RoleId = "a098cd71-927e-415f-bfbc-f4daaa936230"
+                            UserId = "2bb20f36-e3a0-44e4-b204-cdc9b77db7c1",
+                            RoleId = "f614194c-2cdb-44b5-8e3d-cd9fb3ba4afe"
                         });
                 });
 
@@ -477,17 +455,6 @@ namespace ApiCatalogo.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ImageUrl", b =>
-                {
-                    b.HasOne("APICatalogo.Models.Product", "Product")
-                        .WithMany("imageUrl")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -544,11 +511,6 @@ namespace ApiCatalogo.Migrations
             modelBuilder.Entity("APICatalogo.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("APICatalogo.Models.Product", b =>
-                {
-                    b.Navigation("imageUrl");
                 });
 
             modelBuilder.Entity("APICatalogo.Models.UserModel", b =>
