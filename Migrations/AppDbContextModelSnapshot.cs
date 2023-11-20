@@ -108,9 +108,6 @@ namespace ApiCatalogo.Migrations
                     b.Property<decimal>("Height")
                         .HasColumnType("decimal(6, 2)");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -201,19 +198,19 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "54b62763-6c72-4e5e-a144-6ad61e9f76e2",
+                            Id = "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "b94c3010-8cc5-4495-a3e1-4cc3aca475e9",
+                            ConcurrencyStamp = "a85a6864-ecd1-4a6b-8ac7-13493fb550ed",
                             Email = "kauedomingues98@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "KAUEDOMINGUES98@GMAIL.COM",
                             NormalizedUserName = "CHIQUE PET",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJfaY7rG+oKcrFmrWHdoDp1FttzDeHtlUdr/uhV7Otz+zCStt/ip5b8ygg1QZKFqvw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGGE85t3qrlBPL7hxuBzqKKUF6oT+28wnUg0lCe86WV5DUDNhLGmsODnl82f65HFeA==",
                             PhoneNumber = "17996583206",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "aa38108d-7c9a-45fa-873e-02f3eadcf8e1",
+                            SecurityStamp = "36955ff5-cdd1-4bb2-8e2b-2b197849b62d",
                             TwoFactorEnabled = false,
                             UserName = "Chique Pet"
                         });
@@ -273,19 +270,19 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "85984e41-ccc2-4a49-bbe2-d39c228b4fcb",
+                            Id = "fed2a538-bcfe-48f3-8567-77462bd899ca",
                             Name = "Super Admin",
                             NormalizedName = "SUPER ADMIN"
                         },
                         new
                         {
-                            Id = "ffe48cd0-17e5-4bd1-b672-9ca339a51745",
+                            Id = "7d335eed-ba77-4648-ab96-fe4b12e9a479",
                             Name = "Seller",
                             NormalizedName = "SELLER"
                         },
                         new
                         {
-                            Id = "1c0fefe9-7453-48f8-aa88-4b2d5ca80a8d",
+                            Id = "775cf21c-1fd3-4c5b-b957-5f615c0e1fa8",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -376,18 +373,18 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "54b62763-6c72-4e5e-a144-6ad61e9f76e2",
-                            RoleId = "85984e41-ccc2-4a49-bbe2-d39c228b4fcb"
+                            UserId = "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb",
+                            RoleId = "fed2a538-bcfe-48f3-8567-77462bd899ca"
                         },
                         new
                         {
-                            UserId = "54b62763-6c72-4e5e-a144-6ad61e9f76e2",
-                            RoleId = "ffe48cd0-17e5-4bd1-b672-9ca339a51745"
+                            UserId = "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb",
+                            RoleId = "7d335eed-ba77-4648-ab96-fe4b12e9a479"
                         },
                         new
                         {
-                            UserId = "54b62763-6c72-4e5e-a144-6ad61e9f76e2",
-                            RoleId = "1c0fefe9-7453-48f8-aa88-4b2d5ca80a8d"
+                            UserId = "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb",
+                            RoleId = "775cf21c-1fd3-4c5b-b957-5f615c0e1fa8"
                         });
                 });
 

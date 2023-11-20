@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using ApiCatalogo.DTOs;
-using ApiCatalogo.Migrations;
 using ApiCatalogo.Pagination;
 using APICatalogo.Context;
 using APICatalogo.Filters;
@@ -13,7 +7,6 @@ using APICatalogo.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -59,6 +52,20 @@ namespace ApiCatalogo.Controllers
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             return _mapper.Map<List<ListProductDTO>>(products);
+        }
+
+        [HttpGet("search/{search}")]
+        public ActionResult<IEnumerable<ListProductDTO>> Search(string search)
+        {
+
+            if (search == "")
+            {
+                return BadRequest();
+            }
+
+            var products = _context.Products.AsNoTracking().Where((cat) => cat.Name!.ToLower().Contains(search.Trim().ToLower())).Include((p)=>p.imageUrl).Include((p)=>p.Category).ToList();
+
+            return Ok(_mapper.Map<List<ListProductDTO>>(products));
         }
 
         [HttpGet("{id:int}", Name="ObeterProduct")]
@@ -168,8 +175,8 @@ namespace ApiCatalogo.Controllers
                 product.Stock = productCreate.Stock;
                 product.Width = productCreate.Width;
 
-                foreach(var img in product.imageUrl){
-                    _saveFile.RemoveFile(img.Path);
+                foreach(var img in product.imageUrl!){
+                    _saveFile.RemoveFile(img.Path!);
                 }
                 product.imageUrl.Clear();
 
@@ -221,8 +228,8 @@ namespace ApiCatalogo.Controllers
                 ModelState.AddModelError("name", "Produto não existe!");
                 return BadRequest(ModelState);
             }
-            foreach(var img in products.imageUrl){
-                _saveFile.RemoveFile(img.Path);
+            foreach(var img in products.imageUrl!){
+                _saveFile.RemoveFile(img.Path!);
             }
             products.imageUrl.Clear();
             

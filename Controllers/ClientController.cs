@@ -51,7 +51,7 @@ public class ClientController : ControllerBase
         if (identity is not null)
         {
             IEnumerable<Claim> claims = identity.Claims;
-            string emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault().Value;
+            string emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()!.Value;
             var user = await _userManager.FindByEmailAsync(email);
 
             var userDTO = _mapper.Map<ListUserDTO>(user);
@@ -62,7 +62,14 @@ public class ClientController : ControllerBase
             }
             else
             {
-                var roles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(emailToken));
+                var userIdentity = await _userManager.FindByEmailAsync(emailToken!);
+
+                if (userIdentity is null)
+                {
+                    return BadRequest();
+                }
+
+                var roles = await _userManager.GetRolesAsync(userIdentity);
                 var checkRoles = roles.Contains("Super Admin");
 
                 if (checkRoles)
@@ -115,11 +122,16 @@ public class ClientController : ControllerBase
         IEnumerable<Claim> claims = identity.Claims;
         string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
         if (emailToken is null)
-            return BadRequest("Esqeuceu o email amigo");
+            return BadRequest("E necessario informar o email");
 
         if (email != emailToken)
         {
             var user = await _userManager.FindByEmailAsync(emailToken);
+
+            if (user is null)
+            {
+                return BadRequest();
+            }
 
             var roles = await _userManager.GetRolesAsync(user);
             var isNotSuperAdmin = roles.FirstOrDefault("Super Admin") is null;
@@ -191,7 +203,8 @@ public class ClientController : ControllerBase
 
         var userAddress = await _userManager.FindByEmailAsync(email);
 
-        if(userAddress is null){
+        if (userAddress is null)
+        {
             return NotFound();
         }
 
@@ -239,7 +252,7 @@ public class ClientController : ControllerBase
             if (result.Succeeded)
             {
 
-                IList<string> userRoles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(model.Email));
+                IList<string> userRoles = await _userManager.GetRolesAsync(user);
 
                 if (rolesAccepts.Any(x => userRoles.Any(y => x == y)))
                 {
@@ -274,8 +287,14 @@ public class ClientController : ControllerBase
     private async Task<UserModel?> Update(UpdateUserDTO model, string email)
     {
 
-        UserModel userToChange = await _userManager.FindByEmailAsync(email);
-        _mapper.Map<UpdateUserDTO, UserModel>(model, userToChange);
+        UserModel? userToChange = await _userManager.FindByEmailAsync(email);
+
+        if (userToChange is null)
+        {
+            return null;
+        }
+
+        _mapper.Map<UpdateUserDTO, UserModel>(model, userToChange!);
 
         if (model.Password is not null)
         {

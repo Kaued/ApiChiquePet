@@ -1,9 +1,6 @@
 using System.Security.Claims;
-using ApiCatalogo.DTOs;
-using ApiCatalogo.DTOs.Users;
 using APICatalogo.Context;
 using APICatalogo.Models;
-using APICatalogo.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -81,7 +78,7 @@ public class AddressController : ControllerBase
         {
             IEnumerable<Claim> claims = identity.Claims;
             string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
-            var user = await _userManager.FindByEmailAsync(emailToken);
+            var user = await _userManager.FindByEmailAsync(emailToken!);
 
             if (emailToken is null)
             {

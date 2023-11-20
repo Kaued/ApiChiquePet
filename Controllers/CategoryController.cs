@@ -55,7 +55,7 @@ namespace ApiCatalogo.Controllers
                 return BadRequest();
             }
 
-            var category = _context.Categories.AsNoTracking().Where((cat) => cat.Name.ToLower().Contains(search.Trim().ToLower())).ToList();
+            var category = _context.Categories.AsNoTracking().Where((cat) => cat.Name!.ToLower().Contains(search.Trim().ToLower())).ToList();
 
             return Ok(_mapper.Map<List<ListCategoryDTO>>(category));
         }

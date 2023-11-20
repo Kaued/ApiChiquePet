@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiCatalogo.Migrations
 {
     /// <inheritdoc />
-    public partial class create_tables_address_category_user : Migration
+    public partial class create_tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -250,30 +250,54 @@ namespace ApiCatalogo.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Produtos",
+                name: "Product",
                 columns: table => new
                 {
-                    ProdutoId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    Name = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Preco = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
-                    Altura = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    Largura = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    Estoque = table.Column<float>(type: "float", nullable: false),
-                    DataCadastro = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CategoriaId = table.Column<int>(type: "int", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
+                    Height = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    Width = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    Stock = table.Column<float>(type: "float", nullable: false),
+                    DateRegister = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Produtos", x => x.ProdutoId);
+                    table.PrimaryKey("PK_Product", x => x.ProductId);
                     table.ForeignKey(
-                        name: "FK_Produtos_Categories_CategoriaId",
-                        column: x => x.CategoriaId,
+                        name: "FK_Product_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ImageUrl",
+                columns: table => new
+                {
+                    ImageId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Path = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageUrl", x => x.ImageId);
+                    table.ForeignKey(
+                        name: "FK_ImageUrl_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -283,24 +307,24 @@ namespace ApiCatalogo.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1c0fefe9-7453-48f8-aa88-4b2d5ca80a8d", null, "Client", "CLIENT" },
-                    { "85984e41-ccc2-4a49-bbe2-d39c228b4fcb", null, "Super Admin", "SUPER ADMIN" },
-                    { "ffe48cd0-17e5-4bd1-b672-9ca339a51745", null, "Seller", "SELLER" }
+                    { "775cf21c-1fd3-4c5b-b957-5f615c0e1fa8", null, "Client", "CLIENT" },
+                    { "7d335eed-ba77-4648-ab96-fe4b12e9a479", null, "Seller", "SELLER" },
+                    { "fed2a538-bcfe-48f3-8567-77462bd899ca", null, "Super Admin", "SUPER ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "54b62763-6c72-4e5e-a144-6ad61e9f76e2", 0, new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "b94c3010-8cc5-4495-a3e1-4cc3aca475e9", "kauedomingues98@gmail.com", true, false, null, "KAUEDOMINGUES98@GMAIL.COM", "CHIQUE PET", "AQAAAAIAAYagAAAAEJfaY7rG+oKcrFmrWHdoDp1FttzDeHtlUdr/uhV7Otz+zCStt/ip5b8ygg1QZKFqvw==", "17996583206", true, "aa38108d-7c9a-45fa-873e-02f3eadcf8e1", false, "Chique Pet" });
+                values: new object[] { "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb", 0, new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "a85a6864-ecd1-4a6b-8ac7-13493fb550ed", "kauedomingues98@gmail.com", true, false, null, "KAUEDOMINGUES98@GMAIL.COM", "CHIQUE PET", "AQAAAAIAAYagAAAAEGGE85t3qrlBPL7hxuBzqKKUF6oT+28wnUg0lCe86WV5DUDNhLGmsODnl82f65HFeA==", "17996583206", true, "36955ff5-cdd1-4bb2-8e2b-2b197849b62d", false, "Chique Pet" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "1c0fefe9-7453-48f8-aa88-4b2d5ca80a8d", "54b62763-6c72-4e5e-a144-6ad61e9f76e2" },
-                    { "85984e41-ccc2-4a49-bbe2-d39c228b4fcb", "54b62763-6c72-4e5e-a144-6ad61e9f76e2" },
-                    { "ffe48cd0-17e5-4bd1-b672-9ca339a51745", "54b62763-6c72-4e5e-a144-6ad61e9f76e2" }
+                    { "775cf21c-1fd3-4c5b-b957-5f615c0e1fa8", "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb" },
+                    { "7d335eed-ba77-4648-ab96-fe4b12e9a479", "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb" },
+                    { "fed2a538-bcfe-48f3-8567-77462bd899ca", "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -346,9 +370,14 @@ namespace ApiCatalogo.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Produtos_CategoriaId",
-                table: "Produtos",
-                column: "CategoriaId");
+                name: "IX_ImageUrl_ProductId",
+                table: "ImageUrl",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_CategoryId",
+                table: "Product",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
@@ -373,13 +402,16 @@ namespace ApiCatalogo.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Produtos");
+                name: "ImageUrl");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Categories");

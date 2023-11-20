@@ -258,12 +258,12 @@ public class AdminController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult> LoginUser([FromBody] LoginUserDTO model)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
+        var user = await _userManager.FindByEmailAsync(model.Email!);
 
         if (user is not null)
         {
             var result = await _signInManager.PasswordSignInAsync(user,
-            model.Password, isPersistent: false, lockoutOnFailure: false);
+            model.Password!, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
@@ -273,9 +273,9 @@ public class AdminController : ControllerBase
                 if (rolesAccepts.Any(x => userRoles.Any(y => x == y)))
                 {
 
-                    TokenDTO token = _tokenService.GerarToken(_config["Jwt:Key"],
-                                                                _config["TokenConfigurantion:Issuer"],
-                                                                _config["TokenConfigurantion:Audience"],
+                    TokenDTO token = _tokenService.GerarToken(_config["Jwt:Key"]!,
+                                                                _config["TokenConfigurantion:Issuer"]!,
+                                                                _config["TokenConfigurantion:Audience"]!,
                                                                 user,
                                                                 userRoles);
 
@@ -303,7 +303,11 @@ public class AdminController : ControllerBase
     private async Task<UserModel?> Update(UpdateUserDTO model, string email)
     {
 
-        UserModel userToChange = await _userManager.FindByEmailAsync(email);
+        UserModel? userToChange = await _userManager.FindByEmailAsync(email);
+
+        if(userToChange is null){
+            return null;
+        } 
         _mapper.Map<UpdateUserDTO, UserModel>(model, userToChange);
 
         if (model.Password is not null)
