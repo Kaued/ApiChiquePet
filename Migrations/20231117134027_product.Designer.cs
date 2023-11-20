@@ -3,6 +3,7 @@ using System;
 using APICatalogo.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,19 +11,24 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiCatalogo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231117134027_product")]
+    partial class product
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("APICatalogo.Models.Address", b =>
+            modelBuilder.Entity("APICatalogo.Models.AddressModel", b =>
                 {
-                    b.Property<int>("AddressId")
+                    b.Property<int>("AdressId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Cep")
@@ -35,36 +41,82 @@ namespace ApiCatalogo.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
-                    b.Property<string>("Complement")
+                    b.Property<string>("Complent")
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("District")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Neighborhood")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("Number")
                         .HasColumnType("int");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
-                    b.Property<string>("UserId")
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
                         .HasColumnType("varchar(255)");
 
-                    b.HasKey("AddressId");
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("AdressId");
 
-                    b.ToTable("Address");
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("AddressModel");
                 });
 
             modelBuilder.Entity("APICatalogo.Models.Category", b =>
@@ -108,8 +160,9 @@ namespace ApiCatalogo.Migrations
                     b.Property<decimal>("Height")
                         .HasColumnType("decimal(6, 2)");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -201,48 +254,22 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "54b62763-6c72-4e5e-a144-6ad61e9f76e2",
+                            Id = "2bb20f36-e3a0-44e4-b204-cdc9b77db7c1",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "b94c3010-8cc5-4495-a3e1-4cc3aca475e9",
+                            ConcurrencyStamp = "c231609a-0476-4ffd-9e78-59d03f89bac6",
                             Email = "kauedomingues98@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "KAUEDOMINGUES98@GMAIL.COM",
                             NormalizedUserName = "CHIQUE PET",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJfaY7rG+oKcrFmrWHdoDp1FttzDeHtlUdr/uhV7Otz+zCStt/ip5b8ygg1QZKFqvw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK6Zl0wDiRqsbdHmiC1wEiwRswsGoCnERap7NJF4n2FslmD9xOgC6f1zuLEmAUI9Dg==",
                             PhoneNumber = "17996583206",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "aa38108d-7c9a-45fa-873e-02f3eadcf8e1",
+                            SecurityStamp = "145dcb3d-3d07-4dd4-9536-03108a5aaae1",
                             TwoFactorEnabled = false,
                             UserName = "Chique Pet"
                         });
-                });
-
-            modelBuilder.Entity("ImageUrl", b =>
-                {
-                    b.Property<int>("ImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.HasKey("ImageId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ImageUrl");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -273,19 +300,19 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "85984e41-ccc2-4a49-bbe2-d39c228b4fcb",
+                            Id = "347bd24d-66e5-45c7-ad6c-2b8e403352eb",
                             Name = "Super Admin",
                             NormalizedName = "SUPER ADMIN"
                         },
                         new
                         {
-                            Id = "ffe48cd0-17e5-4bd1-b672-9ca339a51745",
+                            Id = "5b52ca37-7b2f-4d94-8e76-49566c4be7bf",
                             Name = "Seller",
                             NormalizedName = "SELLER"
                         },
                         new
                         {
-                            Id = "1c0fefe9-7453-48f8-aa88-4b2d5ca80a8d",
+                            Id = "f614194c-2cdb-44b5-8e3d-cd9fb3ba4afe",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -376,18 +403,18 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "54b62763-6c72-4e5e-a144-6ad61e9f76e2",
-                            RoleId = "85984e41-ccc2-4a49-bbe2-d39c228b4fcb"
+                            UserId = "2bb20f36-e3a0-44e4-b204-cdc9b77db7c1",
+                            RoleId = "347bd24d-66e5-45c7-ad6c-2b8e403352eb"
                         },
                         new
                         {
-                            UserId = "54b62763-6c72-4e5e-a144-6ad61e9f76e2",
-                            RoleId = "ffe48cd0-17e5-4bd1-b672-9ca339a51745"
+                            UserId = "2bb20f36-e3a0-44e4-b204-cdc9b77db7c1",
+                            RoleId = "5b52ca37-7b2f-4d94-8e76-49566c4be7bf"
                         },
                         new
                         {
-                            UserId = "54b62763-6c72-4e5e-a144-6ad61e9f76e2",
-                            RoleId = "1c0fefe9-7453-48f8-aa88-4b2d5ca80a8d"
+                            UserId = "2bb20f36-e3a0-44e4-b204-cdc9b77db7c1",
+                            RoleId = "f614194c-2cdb-44b5-8e3d-cd9fb3ba4afe"
                         });
                 });
 
@@ -410,11 +437,11 @@ namespace ApiCatalogo.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("APICatalogo.Models.Address", b =>
+            modelBuilder.Entity("APICatalogo.Models.AddressModel", b =>
                 {
                     b.HasOne("APICatalogo.Models.UserModel", "User")
                         .WithMany("Address")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
@@ -428,17 +455,6 @@ namespace ApiCatalogo.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ImageUrl", b =>
-                {
-                    b.HasOne("APICatalogo.Models.Product", "Product")
-                        .WithMany("imageUrl")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -495,11 +511,6 @@ namespace ApiCatalogo.Migrations
             modelBuilder.Entity("APICatalogo.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("APICatalogo.Models.Product", b =>
-                {
-                    b.Navigation("imageUrl");
                 });
 
             modelBuilder.Entity("APICatalogo.Models.UserModel", b =>

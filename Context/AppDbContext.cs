@@ -12,7 +12,8 @@ public class AppDbContext : IdentityDbContext<UserModel>
   { }
 
   public DbSet<Category> Categories { get; set; }
-  public DbSet<Produto> Produtos { get; set; }
+  public DbSet<Product> Products { get; set; }
+  public DbSet<ImageUrl> ImageUrl { get; set; }
 
   public DbSet<Address> Address {get; set;}
 
