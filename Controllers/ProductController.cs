@@ -23,7 +23,7 @@ namespace ApiCatalogo.Controllers
         private readonly AppDbContext _context;
         private readonly ILogger<ProductController> _logger;
         private readonly IMapper _mapper;
-         private readonly ISaveFile _saveFile;
+        private readonly ISaveFile _saveFile;
 
 
         public ProductController(AppDbContext context, ILogger<ProductController> logger, IMapper mapper, ISaveFile saveFile)
@@ -35,10 +35,31 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ListProductDTO>> Get([FromQuery]ProductParameters productParameters){
-            
-            var products = PageList<Product>.ToPageList(_context.Products.AsNoTracking()
-                .OrderBy(on => on.Name).Include((p)=>p.Category).Include((img)=>img.imageUrl), productParameters.PageNumber, productParameters.PageSize);
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<ListProductDTO>> Get([FromQuery] ProductParameters productParameters, [FromQuery] string? filter)
+        {
+
+            var requesteProduct = _context.Products.AsNoTracking()
+                                                   .OrderBy(on => on.Name)
+                                                   .Include((p) => p.Category)
+                                                   .Include((img) => img.imageUrl);
+            if (filter is not null)
+            {
+
+                if (filter.Contains("news"))
+                    requesteProduct = _context.Products.AsNoTracking()
+                                                   .OrderBy(on => on.DateRegister)
+                                                   .Include((p) => p.Category)
+                                                   .Include((img) => img.imageUrl);
+
+                if(filter.Contains("popular"))
+                    requesteProduct = _context.Products.AsNoTracking()
+                                                   .OrderBy(on => on.Stock)
+                                                   .Include((p) => p.Category)
+                                                   .Include((img) => img.imageUrl);
+            }
+
+            var products = PageList<Product>.ToPageList(requesteProduct, productParameters.PageNumber, productParameters.PageSize);
 
             _logger.LogInformation("<=============Get api/products==========>");
 
@@ -48,6 +69,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet("search/{search}")]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<ListProductDTO>> Search(string search)
         {
 
@@ -56,16 +78,19 @@ namespace ApiCatalogo.Controllers
                 return BadRequest();
             }
 
-            var products = _context.Products.AsNoTracking().Where((cat) => cat.Name!.ToLower().Contains(search.Trim().ToLower())).Include((p)=>p.imageUrl).Include((p)=>p.Category).ToList();
+            var products = _context.Products.AsNoTracking().Where((cat) => cat.Name!.ToLower().Contains(search.Trim().ToLower())).Include((p) => p.imageUrl).Include((p) => p.Category).ToList();
 
             return Ok(_mapper.Map<List<ListProductDTO>>(products));
         }
 
-        [HttpGet("{id:int}", Name="ObeterProduct")]
-        public ActionResult<ListProductDTO> Get(int id){
-            var product = _context.Products.Where((p)=>p.ProductId==id).Include((p)=>p.Category).Include((img)=>img.imageUrl).AsNoTracking().FirstOrDefault();
+        [HttpGet("{id:int}", Name = "ObeterProduct")]
+        [AllowAnonymous]
+        public ActionResult<ListProductDTO> Get(int id)
+        {
+            var product = _context.Products.Where((p) => p.ProductId == id).Include((p) => p.Category).Include((img) => img.imageUrl).AsNoTracking().FirstOrDefault();
 
-            if(product == null){
+            if (product == null)
+            {
                 ModelState.AddModelError("name", "Produto não existe!");
                 return NotFound(ModelState);
             }
@@ -77,20 +102,22 @@ namespace ApiCatalogo.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Seller")]
         public async Task<ActionResult<ListProductDTO>> Post([FromForm] ProductDTO productDTO)
         {
-            var product = _mapper.Map<Product>(productDTO); 
-            if(product is null){
+            var product = _mapper.Map<Product>(productDTO);
+            if (product is null)
+            {
                 ModelState.AddModelError("name", "Erro ao cadastrar o produto!");
-                return BadRequest(ModelState); 
+                return BadRequest(ModelState);
             }
-            var search = _context.Products.Where((p)=>p.Name==product.Name).FirstOrDefault();
-            if(search is not null){
+            var search = _context.Products.Where((p) => p.Name == product.Name).FirstOrDefault();
+            if (search is not null)
+            {
                 ModelState.AddModelError("name", "Nome do produto já existe!");
                 return BadRequest(ModelState);
             }
 
-            
 
-             try
+
+            try
             {
                 var data = DateTime.Now;
                 var day = data.Day;
@@ -100,7 +127,7 @@ namespace ApiCatalogo.Controllers
                 var minute = data.TimeOfDay.Minutes;
                 var second = data.TimeOfDay.Seconds;
 
-                var formatData = new DateTime(year,month,day,hour,minute,second);                                
+                var formatData = new DateTime(year, month, day, hour, minute, second);
 
                 product.DateRegister = formatData;
 
@@ -111,23 +138,25 @@ namespace ApiCatalogo.Controllers
 
                 var coverUrl = await _saveFile.SaveImage(productDTO.Cover);
 
-                var cover = new ImageUrl(){
-                    Path=coverUrl,
-                    ProductId=product.ProductId,
-                    Type="cover"
+                var cover = new ImageUrl()
+                {
+                    Path = coverUrl,
+                    ProductId = product.ProductId,
+                    Type = "cover"
                 };
 
                 _context.ImageUrl.Add(cover);
 
-                
+
                 foreach (var file in productDTO.Gallery)
                 {
                     var galleryUrl = await _saveFile.SaveImage(file);
 
-                    var gallery = new ImageUrl(){
-                        Path=galleryUrl,
-                        ProductId=product.ProductId,
-                        Type="gallery"
+                    var gallery = new ImageUrl()
+                    {
+                        Path = galleryUrl,
+                        ProductId = product.ProductId,
+                        Type = "gallery"
                     };
 
                     _context.ImageUrl.Add(gallery);
@@ -141,15 +170,17 @@ namespace ApiCatalogo.Controllers
             catch (Exception e)
             {
                 return BadRequest(e);
-            }            
+            }
         }
 
         [HttpPut("{id:int}")]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Seller")]
-        public async Task<ActionResult<ListProductDTO>> Put(int id, [FromForm]ProductDTO productDTO){
-            var product = _context.Products.Where((p) => p.ProductId == id).Include((img)=>img.imageUrl).FirstOrDefault();
+        public async Task<ActionResult<ListProductDTO>> Put(int id, [FromForm] ProductDTO productDTO)
+        {
+            var product = _context.Products.Where((p) => p.ProductId == id).Include((img) => img.imageUrl).FirstOrDefault();
 
-            if(product is null){
+            if (product is null)
+            {
                 ModelState.AddModelError("name", "Produto não existe!");
                 return BadRequest(ModelState);
             }
@@ -158,8 +189,8 @@ namespace ApiCatalogo.Controllers
             {
 
                 var productCreate = _mapper.Map<Product>(productDTO);
-                productCreate.ProductId=product.ProductId;
-                
+                productCreate.ProductId = product.ProductId;
+
                 product.Name = productCreate.Name;
                 product.Description = productCreate.Description;
                 product.Price = productCreate.Price;
@@ -168,17 +199,19 @@ namespace ApiCatalogo.Controllers
                 product.Stock = productCreate.Stock;
                 product.Width = productCreate.Width;
 
-                foreach(var img in product.imageUrl!){
+                foreach (var img in product.imageUrl!)
+                {
                     _saveFile.RemoveFile(img.Path!);
                 }
                 product.imageUrl.Clear();
 
                 var coverUrl = await _saveFile.SaveImage(productDTO.Cover);
 
-                var cover = new ImageUrl(){
-                    Path=coverUrl,
-                    ProductId=product.ProductId,
-                    Type="cover"
+                var cover = new ImageUrl()
+                {
+                    Path = coverUrl,
+                    ProductId = product.ProductId,
+                    Type = "cover"
                 };
 
                 product.imageUrl.Add(cover);
@@ -187,26 +220,27 @@ namespace ApiCatalogo.Controllers
                 {
                     var galleryUrl = await _saveFile.SaveImage(file);
 
-                    var gallery = new ImageUrl(){
-                        Path=galleryUrl,
-                        ProductId=product.ProductId,
-                        Type="gallery"
+                    var gallery = new ImageUrl()
+                    {
+                        Path = galleryUrl,
+                        ProductId = product.ProductId,
+                        Type = "gallery"
                     };
 
                     product.imageUrl.Add(gallery);
                 }
 
                 _context.Products.Update(product);
-                
+
                 _context.SaveChanges();
-                 var showProduct = _mapper.Map<ProductDTO>(productCreate);
+                var showProduct = _mapper.Map<ProductDTO>(productCreate);
                 return Ok(showProduct);
             }
 
             catch (Exception e)
             {
                 return BadRequest(e);
-            }  
+            }
 
         }
 
@@ -214,18 +248,19 @@ namespace ApiCatalogo.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Seller")]
         public ActionResult<ListProductDTO> Delete(int id)
         {
-            var products = _context.Products.Include((img)=>img.imageUrl).FirstOrDefault(p => p.ProductId == id);
+            var products = _context.Products.Include((img) => img.imageUrl).FirstOrDefault(p => p.ProductId == id);
 
             if (products is null)
             {
                 ModelState.AddModelError("name", "Produto não existe!");
                 return BadRequest(ModelState);
             }
-            foreach(var img in products.imageUrl!){
+            foreach (var img in products.imageUrl!)
+            {
                 _saveFile.RemoveFile(img.Path!);
             }
             products.imageUrl.Clear();
-            
+
             _context.Products.Remove(products);
 
             _context.SaveChanges();

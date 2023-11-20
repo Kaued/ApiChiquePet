@@ -11,6 +11,6 @@ namespace ApiCatalogo.DTOs
     public string? Name { get; set; }
     // [Required]
     public string ImageUrl { get; set; }
-    public ICollection<ProductDTO>? Produtos {get; set;}
+    public ICollection<ListProductDTO>? Products {get; set;}
   }
 }

@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Admin",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173")
+            policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader()
                                 .WithExposedHeaders("X-Pagination");

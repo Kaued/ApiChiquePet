@@ -31,6 +31,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]   
         public ActionResult<IEnumerable<CategoryDTO>> Get([FromQuery] CategoryParameters categoryParameters)
         {
             var category = PageList<Category>.ToPageList(_context.Categories.AsNoTracking().OrderBy(on => on.Name), categoryParameters.PageNumber, categoryParameters.PageSize);
@@ -59,16 +60,21 @@ namespace ApiCatalogo.Controllers
 
             return Ok(_mapper.Map<List<ListCategoryDTO>>(category));
         }
-        [HttpGet("produtos")]
-        public ActionResult<IEnumerable<CategoryDTO>> GetCategoryProdutos()
+        [HttpGet("{id:int}/products")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<CategoryDTO>> GetCategoryProducts([FromQuery] CategoryParameters categoryParameters, int id)
         {
-            var category = _context.Categories.AsNoTracking().Include(p => p.Products).ToList();
+            var category = PageList<Category>.ToPageList(_context.Categories.AsNoTracking().Where((c)=>c.CategoryId==id).Include((c)=>c.Products)!.ThenInclude((p)=>p.imageUrl).OrderBy((c)=>c.Name), categoryParameters.PageNumber, categoryParameters.PageSize);
+
             if (category is null)
             {
                 return NoContent();
             }
 
-            return _mapper.Map<List<CategoryDTO>>(category);
+            var pagination = _mapper.Map<PaginationDTO>(category);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
+
+            return Ok(_mapper.Map<List<ListCategoryDTO>>(category));
         }
         [HttpGet("{id:int}", Name = "ObeterCategory")]
         public ActionResult<CategoryDTO> Get(int id)
