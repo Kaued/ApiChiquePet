@@ -42,15 +42,8 @@ namespace ApiCatalogo.Controllers
 
             _logger.LogInformation("<=============Get api/products==========>");
 
-            var metadata = new{
-                products.TotalCount,
-                products.PageSize,
-                products.TotalPages,
-                products.HasNext,
-                products.HasPrevious
-            };
-
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            var pagination = _mapper.Map<PaginationDTO>(products);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
             return _mapper.Map<List<ListProductDTO>>(products);
         }
 
