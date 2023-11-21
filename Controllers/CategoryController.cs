@@ -64,17 +64,17 @@ namespace ApiCatalogo.Controllers
         [AllowAnonymous]
         public ActionResult<IEnumerable<CategoryDTO>> GetCategoryProducts([FromQuery] CategoryParameters categoryParameters, int id)
         {
-            var category = PageList<Category>.ToPageList(_context.Categories.AsNoTracking().Where((c)=>c.CategoryId==id).Include((c)=>c.Products)!.ThenInclude((p)=>p.imageUrl).OrderBy((c)=>c.Name), categoryParameters.PageNumber, categoryParameters.PageSize);
+            var product = PageList<Product>.ToPageList(_context.Products.AsNoTracking().Where((c)=>c.CategoryId==id).Include((c)=>c.Category).Include((p)=>p.imageUrl).OrderBy((c)=>c.Name), categoryParameters.PageNumber, categoryParameters.PageSize);
 
-            if (category is null)
+            if (product is null)
             {
                 return NoContent();
             }
 
-            var pagination = _mapper.Map<PaginationDTO>(category);
+            var pagination = _mapper.Map<PaginationDTO>(product);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
 
-            return Ok(_mapper.Map<List<ListCategoryDTO>>(category));
+            return Ok(_mapper.Map<List<ListProductDTO>>(product));
         }
         [HttpGet("{id:int}", Name = "ObeterCategory")]
         public ActionResult<CategoryDTO> Get(int id)
