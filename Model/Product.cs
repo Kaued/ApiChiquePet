@@ -17,7 +17,7 @@ public class Product
   [StringLength(300)]
   public string? Name {get; set;}
   [Required]
-  [StringLength(300)]
+  [Column(TypeName = "text")]
   public string? Description {get; set;}
   [Required]
   [Column(TypeName = "decimal(7, 2)")]
