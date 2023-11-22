@@ -98,6 +98,21 @@ namespace ApiCatalogo.Controllers
             return _mapper.Map<ListProductDTO>(product);
         }
 
+        [HttpGet("{name}")]
+        [AllowAnonymous]
+        public ActionResult<ListProductDTO> GetName(string name)
+        {
+            var product = _context.Products.Where((p) => p.Name == name).Include((p) => p.Category).Include((img) => img.imageUrl).AsNoTracking().FirstOrDefault();
+
+            if (product == null)
+            {
+                ModelState.AddModelError("name", "Produto não existe!");
+                return NotFound(ModelState);
+            }
+
+            return _mapper.Map<ListProductDTO>(product);
+        }
+
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Seller")]
         public async Task<ActionResult<ListProductDTO>> Post([FromForm] ProductDTO productDTO)
