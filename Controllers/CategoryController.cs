@@ -60,11 +60,11 @@ namespace ApiCatalogo.Controllers
 
             return Ok(_mapper.Map<List<ListCategoryDTO>>(category));
         }
-        [HttpGet("{id:int}/products")]
+        [HttpGet("{name}/products")]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<CategoryDTO>> GetCategoryProducts([FromQuery] CategoryParameters categoryParameters, int id)
+        public ActionResult<IEnumerable<CategoryDTO>> GetCategoryProducts([FromQuery] CategoryParameters categoryParameters, string name)
         {
-            var product = PageList<Product>.ToPageList(_context.Products.AsNoTracking().Where((c)=>c.CategoryId==id).Include((c)=>c.Category).Include((p)=>p.imageUrl).OrderBy((c)=>c.Name), categoryParameters.PageNumber, categoryParameters.PageSize);
+            var product = PageList<Product>.ToPageList(_context.Products.AsNoTracking().Include((c)=>c.Category).Where((c) => c.Category.Name == name).Include((p)=>p.imageUrl).OrderBy((c)=>c.Name), categoryParameters.PageNumber, categoryParameters.PageSize);
 
             if (product is null)
             {

@@ -48,7 +48,7 @@ namespace ApiCatalogo.Controllers
 
                 if (filter.Contains("news"))
                     requesteProduct = _context.Products.AsNoTracking()
-                                                   .OrderBy(on => on.DateRegister)
+                                                   .OrderByDescending(on => on.DateRegister)
                                                    .Include((p) => p.Category)
                                                    .Include((img) => img.imageUrl);
 
