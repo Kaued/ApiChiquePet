@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiCatalogo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231120133403_create_tables")]
-    partial class create_tables
+    [Migration("20231125195020_create_table")]
+    partial class create_table
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,6 +91,72 @@ namespace ApiCatalogo.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("APICatalogo.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("IsOrder")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusOrder")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(7, 2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("APICatalogo.Models.OrderProduct", b =>
+                {
+                    b.Property<int>("OrderProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Qtd")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderProductId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProducts");
+                });
+
             modelBuilder.Entity("APICatalogo.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -105,8 +171,7 @@ namespace ApiCatalogo.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Height")
                         .HasColumnType("decimal(6, 2)");
@@ -201,19 +266,19 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb",
+                            Id = "3a21f403-56c5-49b6-b100-70cae07d63d2",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "a85a6864-ecd1-4a6b-8ac7-13493fb550ed",
+                            ConcurrencyStamp = "d30575ee-241a-4acf-b792-9a0b02a8d331",
                             Email = "kauedomingues98@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "KAUEDOMINGUES98@GMAIL.COM",
                             NormalizedUserName = "CHIQUE PET",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGGE85t3qrlBPL7hxuBzqKKUF6oT+28wnUg0lCe86WV5DUDNhLGmsODnl82f65HFeA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC3FDeOE4b3kQslUHn/35SdeDVfW1P8PCPhvDc7L3LjEFS+uA8rZ09ih/1roBD91hQ==",
                             PhoneNumber = "17996583206",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "36955ff5-cdd1-4bb2-8e2b-2b197849b62d",
+                            SecurityStamp = "fe069501-b033-4dce-bfce-6151af517d49",
                             TwoFactorEnabled = false,
                             UserName = "Chique Pet"
                         });
@@ -273,19 +338,19 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fed2a538-bcfe-48f3-8567-77462bd899ca",
+                            Id = "913e9ae7-f8eb-42a7-b53f-43d4faa3e50b",
                             Name = "Super Admin",
                             NormalizedName = "SUPER ADMIN"
                         },
                         new
                         {
-                            Id = "7d335eed-ba77-4648-ab96-fe4b12e9a479",
+                            Id = "9838fc98-ca30-4e31-b81f-e184f082c57b",
                             Name = "Seller",
                             NormalizedName = "SELLER"
                         },
                         new
                         {
-                            Id = "775cf21c-1fd3-4c5b-b957-5f615c0e1fa8",
+                            Id = "4f0fcdf6-98a4-4485-a7ec-1efa2da11363",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -376,18 +441,18 @@ namespace ApiCatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb",
-                            RoleId = "fed2a538-bcfe-48f3-8567-77462bd899ca"
+                            UserId = "3a21f403-56c5-49b6-b100-70cae07d63d2",
+                            RoleId = "913e9ae7-f8eb-42a7-b53f-43d4faa3e50b"
                         },
                         new
                         {
-                            UserId = "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb",
-                            RoleId = "7d335eed-ba77-4648-ab96-fe4b12e9a479"
+                            UserId = "3a21f403-56c5-49b6-b100-70cae07d63d2",
+                            RoleId = "9838fc98-ca30-4e31-b81f-e184f082c57b"
                         },
                         new
                         {
-                            UserId = "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb",
-                            RoleId = "775cf21c-1fd3-4c5b-b957-5f615c0e1fa8"
+                            UserId = "3a21f403-56c5-49b6-b100-70cae07d63d2",
+                            RoleId = "4f0fcdf6-98a4-4485-a7ec-1efa2da11363"
                         });
                 });
 
@@ -417,6 +482,46 @@ namespace ApiCatalogo.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("APICatalogo.Models.Order", b =>
+                {
+                    b.HasOne("APICatalogo.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("APICatalogo.Models.UserModel", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("APICatalogo.Models.Product", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("APICatalogo.Models.OrderProduct", b =>
+                {
+                    b.HasOne("APICatalogo.Models.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("APICatalogo.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("APICatalogo.Models.Product", b =>
@@ -497,8 +602,15 @@ namespace ApiCatalogo.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("APICatalogo.Models.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
+                });
+
             modelBuilder.Entity("APICatalogo.Models.Product", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("imageUrl");
                 });
 

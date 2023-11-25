@@ -36,4 +36,6 @@ public class Product
   public Category? Category {get; set;}
   [JsonIgnore]
   public ICollection<ImageUrl>? imageUrl {get; set;}
+
+  public List<Order> Orders {get; set;} = new();
 }

@@ -14,8 +14,9 @@ public class AppDbContext : IdentityDbContext<UserModel>
   public DbSet<Category> Categories { get; set; }
   public DbSet<Product> Products { get; set; }
   public DbSet<ImageUrl> ImageUrl { get; set; }
-
   public DbSet<Address> Address {get; set;}
+  public DbSet<Order> Orders{get; set;}
+  public DbSet<OrderProduct> OrderProducts {get; set;}
 
   protected override void OnModelCreating(ModelBuilder model)
   {

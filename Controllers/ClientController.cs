@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using ApiCatalogo.DTOs;
 using ApiCatalogo.DTOs.Users;
+using ApiCatalogo.Pagination;
 using APICatalogo.Context;
 using APICatalogo.Models;
 using APICatalogo.Service;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace ApiCatalogo.Controllers;
 
@@ -89,6 +91,32 @@ public class ClientController : ControllerBase
         }
     }
 
+    [HttpGet("pedidos")]
+    public async Task<ActionResult> GetOrders([FromQuery] OrderParameters orderParameters)
+    {
+
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+        if (identity is not null)
+        {
+            IEnumerable<Claim> claims = identity.Claims;
+            string emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()!.Value;
+
+            var user = await _userManager.FindByEmailAsync(emailToken);
+
+            if (user is null)
+            {
+                return Unauthorized();
+            }
+
+            var orders = PageList<Order>.ToPageListAsync(_context.Orders.Include((p) => p.User).Where((p) => p.User!.Email == user.Email).Include((p) => p.Address).Include((p) => p.OrderProducts).ThenInclude((o) => o.Product), orderParameters.PageNumber, orderParameters.PageSize);
+
+        
+            return Ok(orders);
+        }
+
+        return BadRequest();
+    }
 
     [HttpPost()]
     [AllowAnonymous]

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiCatalogo.Migrations
 {
     /// <inheritdoc />
-    public partial class create_tables : Migration
+    public partial class create_table : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -257,7 +257,7 @@ namespace ApiCatalogo.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    Description = table.Column<string>(type: "text", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Price = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
                     Height = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
@@ -302,29 +302,96 @@ namespace ApiCatalogo.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TotalPrice = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    StatusOrder = table.Column<int>(type: "int", nullable: false),
+                    IsOrder = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CustomerId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProductId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Orders_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "OrderProducts",
+                columns: table => new
+                {
+                    OrderProductId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Qtd = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderProducts", x => x.OrderProductId);
+                    table.ForeignKey(
+                        name: "FK_OrderProducts_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderProducts_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "775cf21c-1fd3-4c5b-b957-5f615c0e1fa8", null, "Client", "CLIENT" },
-                    { "7d335eed-ba77-4648-ab96-fe4b12e9a479", null, "Seller", "SELLER" },
-                    { "fed2a538-bcfe-48f3-8567-77462bd899ca", null, "Super Admin", "SUPER ADMIN" }
+                    { "4f0fcdf6-98a4-4485-a7ec-1efa2da11363", null, "Client", "CLIENT" },
+                    { "913e9ae7-f8eb-42a7-b53f-43d4faa3e50b", null, "Super Admin", "SUPER ADMIN" },
+                    { "9838fc98-ca30-4e31-b81f-e184f082c57b", null, "Seller", "SELLER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb", 0, new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "a85a6864-ecd1-4a6b-8ac7-13493fb550ed", "kauedomingues98@gmail.com", true, false, null, "KAUEDOMINGUES98@GMAIL.COM", "CHIQUE PET", "AQAAAAIAAYagAAAAEGGE85t3qrlBPL7hxuBzqKKUF6oT+28wnUg0lCe86WV5DUDNhLGmsODnl82f65HFeA==", "17996583206", true, "36955ff5-cdd1-4bb2-8e2b-2b197849b62d", false, "Chique Pet" });
+                values: new object[] { "3a21f403-56c5-49b6-b100-70cae07d63d2", 0, new DateTime(2003, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "d30575ee-241a-4acf-b792-9a0b02a8d331", "kauedomingues98@gmail.com", true, false, null, "KAUEDOMINGUES98@GMAIL.COM", "CHIQUE PET", "AQAAAAIAAYagAAAAEC3FDeOE4b3kQslUHn/35SdeDVfW1P8PCPhvDc7L3LjEFS+uA8rZ09ih/1roBD91hQ==", "17996583206", true, "fe069501-b033-4dce-bfce-6151af517d49", false, "Chique Pet" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "775cf21c-1fd3-4c5b-b957-5f615c0e1fa8", "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb" },
-                    { "7d335eed-ba77-4648-ab96-fe4b12e9a479", "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb" },
-                    { "fed2a538-bcfe-48f3-8567-77462bd899ca", "ef5bea51-6fe0-420c-a9f8-bb2dd3d9eecb" }
+                    { "4f0fcdf6-98a4-4485-a7ec-1efa2da11363", "3a21f403-56c5-49b6-b100-70cae07d63d2" },
+                    { "913e9ae7-f8eb-42a7-b53f-43d4faa3e50b", "3a21f403-56c5-49b6-b100-70cae07d63d2" },
+                    { "9838fc98-ca30-4e31-b81f-e184f082c57b", "3a21f403-56c5-49b6-b100-70cae07d63d2" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -375,6 +442,31 @@ namespace ApiCatalogo.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderProducts_OrderId",
+                table: "OrderProducts",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProducts_ProductId",
+                table: "OrderProducts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_AddressId",
+                table: "Orders",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerId",
+                table: "Orders",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ProductId",
+                table: "Orders",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
                 table: "Product",
                 column: "CategoryId");
@@ -383,9 +475,6 @@ namespace ApiCatalogo.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Address");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -405,13 +494,22 @@ namespace ApiCatalogo.Migrations
                 name: "ImageUrl");
 
             migrationBuilder.DropTable(
+                name: "OrderProducts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Address");
 
             migrationBuilder.DropTable(
                 name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Categories");

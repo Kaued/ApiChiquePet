@@ -11,13 +11,16 @@ namespace ApiCatalogo.DTOs.Mappings
 
     public MappingProfile()
     {
-      CreateMap<Product, ProductDTO>().ReverseMap();
+      // Category
       CreateMap<Category, CategoryDTO>().ReverseMap();
       CreateMap<Category, ListCategoryDTO>().ReverseMap();
-
+      
+      // Product
+      CreateMap<Product, ProductDTO>().ReverseMap();
       CreateMap<Product, ListProductDTO>().ReverseMap();
       CreateMap<Category, CategoryProd>().ReverseMap();
 
+      // ImagesProduct
       CreateMap<ImageUrl, ImageUrlDTO>().ReverseMap();
       CreateMap<ImageUrl, ListImageUrlDTO>().ReverseMap();
 
@@ -30,6 +33,10 @@ namespace ApiCatalogo.DTOs.Mappings
       // Address
       CreateMap<Address, AddressDTO>().ReverseMap();
       CreateMap<Address, ListAddressDTO>().ReverseMap();
+
+      // Order
+      CreateMap<Order, ListOrderDTO>().ReverseMap();
+      CreateMap<OrderProduct, OrderProductDTO>().ReverseMap();
 
       // Pagination
       CreateMap(typeof(PageList<>), typeof(PaginationDTO)).ReverseMap();

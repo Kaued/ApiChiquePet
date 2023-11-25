@@ -208,7 +208,7 @@ public class AdminController : ControllerBase
         IEnumerable<Claim> claims = identity.Claims;
         string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
         if (emailToken is null)
-            return BadRequest("Esqeuceu o email amigo");
+            return BadRequest("Sem email no token");
 
         if (email != emailToken)
         {
