@@ -91,7 +91,7 @@ public class ClientController : ControllerBase
         }
     }
 
-    [HttpGet("pedidos")]
+    [HttpGet("orders")]
     public async Task<ActionResult> GetOrders([FromQuery] OrderParameters orderParameters)
     {
 
@@ -109,10 +109,12 @@ public class ClientController : ControllerBase
                 return Unauthorized();
             }
 
-            var orders = PageList<Order>.ToPageListAsync(_context.Orders.Include((p) => p.User).Where((p) => p.User!.Email == user.Email).Include((p) => p.Address).Include((p) => p.OrderProducts).ThenInclude((o) => o.Product), orderParameters.PageNumber, orderParameters.PageSize);
+            var orders = await PageList<Order>.ToPageListAsync(_context.Orders.Include((p) => p.User).Where((p) => p.User!.Email == user.Email).Include((p) => p.Address).Include((p)=>p.OrderProducts).ThenInclude((o)=>o.Product).OrderBy((p)=>p.CreateDate).AsNoTracking(), orderParameters.PageNumber, orderParameters.PageSize);
 
-        
-            return Ok(orders);
+            var pagination = _mapper.Map<PaginationDTO>(orders);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
+
+            return Ok(_mapper.Map<List<ListOrderDTO>>(orders));
         }
 
         return BadRequest();
