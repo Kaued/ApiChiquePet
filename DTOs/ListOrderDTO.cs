@@ -10,7 +10,7 @@ namespace ApiCatalogo.DTOs{
     public DateTime CreateDate { get; set; }
     public int StatusOrder { get; set; }
     public int AddressId { get; set; }
-    public int UserId { get; set; }
+    public string UserId { get; set; }
     public ListUserDTO? User { get; set; }
     public ListAddressDTO? Address { get; set; }
     public ICollection<OrderProductDTO> OrderProducts { get; set; }
