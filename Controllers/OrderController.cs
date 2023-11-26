@@ -220,6 +220,7 @@ public class OrderController : ControllerBase
             order.StatusOrder = model.StatusId;
             _context.SaveChanges();
 
+            return Ok();
         }
 
         return BadRequest();
@@ -235,6 +236,7 @@ public class OrderController : ControllerBase
         if (order is not null)
         {
             order.StatusOrder = 8;
+            return Ok();
         }
 
         return BadRequest();
