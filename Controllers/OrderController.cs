@@ -137,6 +137,13 @@ public class OrderController : ControllerBase
             string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
             var user = await _userManager.FindByEmailAsync(emailToken!);
 
+            var address = await _context.Address.Where((p) => p.AddressId == model.AddressId).FirstOrDefaultAsync();
+
+            if (address is null)
+            {
+                return BadRequest();
+            }
+
             if (emailToken is null)
             {
                 return Unauthorized();
@@ -179,9 +186,9 @@ public class OrderController : ControllerBase
 
             foreach (var item in model.Item)
             {
-                var itemProduct = product.Find((p)=>p.ProductId==item.ProductId);
+                var itemProduct = product.Find((p) => p.ProductId == item.ProductId);
 
-                itemProduct!.Stock = itemProduct.Stock<=item.Qtd ? 0 : itemProduct.Stock-item.Qtd;
+                itemProduct!.Stock = itemProduct.Stock <= item.Qtd ? 0 : itemProduct.Stock - item.Qtd;
 
                 var orderProduct = new OrderProduct()
                 {
