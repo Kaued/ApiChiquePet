@@ -34,7 +34,7 @@ public class OrderController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin,Seller")]
     public async Task<ActionResult> Get([FromQuery] OrderParameters orderParameters, [FromQuery] int? statusId)
     {
-        var contextOrder = _context.Orders.Include((p) => p.User).OrderBy((p) => p.CreateDate).AsNoTracking().Where((p) => p.StatusOrder != 8);
+        var contextOrder = _context.Orders.Include((p) => p.User).OrderByDescending((p) => p.CreateDate).AsNoTracking().Where((p) => p.StatusOrder != 8);
 
         if (statusId is not null)
         {
@@ -44,7 +44,7 @@ public class OrderController : ControllerBase
                 return BadRequest();
             }
 
-            contextOrder = _context.Orders.Include((p) => p.User).OrderBy((p) => p.CreateDate).AsNoTracking().Where((p) => p.StatusOrder == statusId);
+            contextOrder = _context.Orders.Include((p) => p.User).OrderByDescending((p) => p.CreateDate).AsNoTracking().Where((p) => p.StatusOrder == statusId);
 
         }
 

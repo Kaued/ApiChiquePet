@@ -54,9 +54,11 @@ namespace ApiCatalogo.Controllers
 
                 if(filter.Contains("popular"))
                     requesteProduct = _context.Products.AsNoTracking()
-                                                   .OrderBy(on => on.Stock)
+                                                   .Include((orders)=>orders.OrdersProduct)
+                                                   .OrderByDescending(on => on.OrdersProduct.Count)
                                                    .Include((p) => p.Category)
                                                    .Include((img) => img.imageUrl);
+
             }
 
             var products = PageList<Product>.ToPageList(requesteProduct, productParameters.PageNumber, productParameters.PageSize);
