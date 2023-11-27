@@ -73,7 +73,7 @@ public class OrderController : ControllerBase
 
         var user = await _userManager.FindByEmailAsync(emailToken);
 
-        var order = await _context.Orders.Where((p) => p.OrderId == id).Include((p) => p.User).Include((p) => p.Address).Include((p) => p.OrderProducts).ThenInclude((o) => o.Product).FirstOrDefaultAsync();
+        var order = await _context.Orders.Where((p) => p.OrderId == id).Include((p) => p.User).Include((p) => p.Address).Include((p) => p.OrderProducts).ThenInclude((o) => o.Product).ThenInclude((op)=>op!.imageUrl).FirstOrDefaultAsync();
 
         if (order is null)
         {

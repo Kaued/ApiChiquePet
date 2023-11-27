@@ -11,6 +11,7 @@ namespace ApiCatalogo.DTOs{
     public int StatusOrder { get; set; }
     public int AddressId { get; set; }
     public string UserId { get; set; }
+    public bool IsOrder {get; set;}
     public ListUserDTO? User { get; set; }
     public ListAddressDTO? Address { get; set; }
     public ICollection<OrderProductDTO> OrderProducts { get; set; }
