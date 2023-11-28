@@ -1,3 +1,4 @@
+using System.Globalization;
 using ApiCatalogo.DTOs;
 using ApiCatalogo.Pagination;
 using APICatalogo.Context;
@@ -52,9 +53,9 @@ namespace ApiCatalogo.Controllers
                                                    .Include((p) => p.Category)
                                                    .Include((img) => img.imageUrl);
 
-                if(filter.Contains("popular"))
+                if (filter.Contains("popular"))
                     requesteProduct = _context.Products.AsNoTracking()
-                                                   .Include((orders)=>orders.OrdersProduct)
+                                                   .Include((orders) => orders.OrdersProduct)
                                                    .OrderByDescending(on => on.OrdersProduct.Count)
                                                    .Include((p) => p.Category)
                                                    .Include((img) => img.imageUrl);
@@ -120,6 +121,10 @@ namespace ApiCatalogo.Controllers
         public async Task<ActionResult<ListProductDTO>> Post([FromForm] ProductDTO productDTO)
         {
             var product = _mapper.Map<Product>(productDTO);
+            product.Price = decimal.Parse(productDTO.PriceStr, CultureInfo.InvariantCulture);
+            product.Width = decimal.Parse(productDTO.WidthStr, CultureInfo.InvariantCulture);
+            product.Height = decimal.Parse(productDTO.HeightStr, CultureInfo.InvariantCulture);
+            
             if (product is null)
             {
                 ModelState.AddModelError("name", "Erro ao cadastrar o produto!");
@@ -131,8 +136,6 @@ namespace ApiCatalogo.Controllers
                 ModelState.AddModelError("name", "Nome do produto já existe!");
                 return BadRequest(ModelState);
             }
-
-
 
             try
             {
@@ -210,11 +213,11 @@ namespace ApiCatalogo.Controllers
 
                 product.Name = productCreate.Name;
                 product.Description = productCreate.Description;
-                product.Price = productCreate.Price;
                 product.CategoryId = productCreate.CategoryId;
-                product.Height = productCreate.Height;
                 product.Stock = productCreate.Stock;
-                product.Width = productCreate.Width;
+                product.Price = decimal.Parse(productDTO.PriceStr, CultureInfo.InvariantCulture);
+                product.Width = decimal.Parse(productDTO.WidthStr, CultureInfo.InvariantCulture);
+                product.Height = decimal.Parse(productDTO.HeightStr, CultureInfo.InvariantCulture);
 
                 foreach (var img in product.imageUrl!)
                 {

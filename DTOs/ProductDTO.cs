@@ -14,16 +14,13 @@ namespace ApiCatalogo.DTOs
     [Required]
     public string Description { get; set; }
     [Required]
-    [Range(1, Double.PositiveInfinity)]
-    public decimal Price { get; set; }
+    public string PriceStr { get; set; }
     public IFormFile Cover {get; set;}
     public ICollection<IFormFile> Gallery { get; set; }
     [Required]
-    [Range(1, Double.PositiveInfinity)]
-    public decimal Height {get; set; }
+    public string HeightStr {get; set; }
     [Required]
-    [Range(1, Double.PositiveInfinity)]
-    public decimal Width {get; set; }
+    public string WidthStr {get; set; }
     [Required]
     [Range(0, int.MaxValue)]
     public float Stock {get; set;}
