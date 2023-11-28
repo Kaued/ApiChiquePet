@@ -1,4 +1,4 @@
-namespace ApiCatalogo.Pagination{
+namespace ApiChikPet.Pagination{
 
   public class CategoryParameters : QueryStringParameters{
   }

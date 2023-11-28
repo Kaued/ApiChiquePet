@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using APICatalogo.Models;
+using ApiChikPet.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace ApiCatalogo.DTOs.Users
+namespace ApiChikPet.DTOs.Users
 {
 
   public class ListUserDTO

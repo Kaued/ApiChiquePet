@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using APICatalogo.Models;
+using ApiChikPet.Models;
 
-namespace ApiCatalogo.DTOs
+namespace ApiChikPet.DTOs
 {
 
   public class ProductDTO

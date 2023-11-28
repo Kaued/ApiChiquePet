@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace ApiCatalogo.Loggin
+namespace ApiChikPet.Loggin
 {
 
   public class CustomLogger : ILogger

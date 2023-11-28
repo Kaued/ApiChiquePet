@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using ApiCatalogo.DTOs.Users;
-using APICatalogo.Models;
+using ApiChikPet.DTOs.Users;
+using ApiChikPet.Models;
 
-namespace ApiCatalogo
+namespace ApiChikPet
 {
 
   public class ListAddressDTO

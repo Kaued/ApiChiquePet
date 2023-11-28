@@ -1,6 +1,6 @@
 using System.Security.Claims;
-using APICatalogo.Context;
-using APICatalogo.Models;
+using ApiChikPet.Context;
+using ApiChikPet.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApiCatalogo.Controllers;
+namespace ApiChikPet.Controllers;
 
 [Route("[controller]")]
 [EnableCors("Admin")]

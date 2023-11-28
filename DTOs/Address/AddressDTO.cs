@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiCatalogo
+namespace ApiChikPet
 {
 
   public class AddressDTO

@@ -1,7 +1,7 @@
-using ApiCatalogo.DTOs.Users;
-using APICatalogo.Models;
+using ApiChikPet.DTOs.Users;
+using ApiChikPet.Models;
 
-namespace ApiCatalogo.DTOs{
+namespace ApiChikPet.DTOs{
 
   public class ListOrderDTO{
 

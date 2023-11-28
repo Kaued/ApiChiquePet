@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ApiCatalogo.Pagination
+namespace ApiChikPet.Pagination
 {
 
     public class PageList<T> : List<T>{

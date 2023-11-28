@@ -1,14 +1,14 @@
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Text.Json.Serialization;
-using ApiCatalogo.DTOs.Mappings;
-using ApiCatalogo.Loggin;
-using APICatalogo.Context;
-using APICatalogo.Filters;
-using APICatalogo.Models;
-using APICatalogo.Observer;
-using APICatalogo.Service;
-using APICatalogo.Services;
+using ApiChikPet.DTOs.Mappings;
+using ApiChikPet.Loggin;
+using ApiChikPet.Context;
+using ApiChikPet.Filters;
+using ApiChikPet.Models;
+using ApiChikPet.Observer;
+using ApiChikPet.Service;
+using ApiChikPet.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -43,7 +43,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiCatalogo", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiChikPet", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {

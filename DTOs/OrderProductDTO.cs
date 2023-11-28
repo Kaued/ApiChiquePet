@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using ApiCatalogo.DTOs;
+using ApiChikPet.DTOs;
 
-namespace APICatalogo.Models
+namespace ApiChikPet.Models
 {
 
   public class OrderProductDTO

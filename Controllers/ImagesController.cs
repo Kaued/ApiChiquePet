@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace ApiCatalogo.Controllers
+namespace ApiChikPet.Controllers
 {
     [Route("download")]
   [EnableCors("Admin")]

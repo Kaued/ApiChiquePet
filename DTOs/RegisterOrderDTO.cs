@@ -1,9 +1,9 @@
 
 
 using System.ComponentModel.DataAnnotations;
-using ApiCatalogo.Class;
+using ApiChikPet.Class;
 
-namespace ApiCatalogo.DTOs{
+namespace ApiChikPet.DTOs{
 
   public class RegisterOrder{
 

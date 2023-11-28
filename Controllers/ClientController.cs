@@ -1,10 +1,10 @@
 using System.Security.Claims;
-using ApiCatalogo.DTOs;
-using ApiCatalogo.DTOs.Users;
-using ApiCatalogo.Pagination;
-using APICatalogo.Context;
-using APICatalogo.Models;
-using APICatalogo.Service;
+using ApiChikPet.DTOs;
+using ApiChikPet.DTOs.Users;
+using ApiChikPet.Pagination;
+using ApiChikPet.Context;
+using ApiChikPet.Models;
+using ApiChikPet.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace ApiCatalogo.Controllers;
+namespace ApiChikPet.Controllers;
 
 [Route("[controller]")]
 [EnableCors("Admin")]

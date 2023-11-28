@@ -1,9 +1,9 @@
-using APICatalogo.Models;
+using ApiChikPet.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace APICatalogo.Context;
+namespace ApiChikPet.Context;
 
 public class AppDbContext : IdentityDbContext<UserModel>
 {

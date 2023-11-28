@@ -1,7 +1,7 @@
-using ApiCatalogo.DTOs;
-using APICatalogo.Models;
+using ApiChikPet.DTOs;
+using ApiChikPet.Models;
 
-namespace APICatalogo.Service;
+namespace ApiChikPet.Service;
 
 public interface ITokenService{
   TokenDTO GerarToken(string key, string issues, string audience, UserModel user, IList<string> userRoles);

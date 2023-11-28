@@ -1,12 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ApiCatalogo.DTOs;
-using APICatalogo.Models;
-using APICatalogo.Service;
+using ApiChikPet.DTOs;
+using ApiChikPet.Models;
+using ApiChikPet.Service;
 using Microsoft.IdentityModel.Tokens;
 
-namespace APICatalogo.Services;
+namespace ApiChikPet.Services;
 
 public class TokenService: ITokenService {
 
