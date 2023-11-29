@@ -1,7 +1,7 @@
 # ApiChiquePet
 
 ## Descrição
-O ApiChiquePet é um projeto desenvolvido em .NET 7.0 que oferece uma API para gerenciar informações relacionadas a animais de estimação com estilo e elegância do seu pet. O projeto utiliza o Entity Framework Core como ferramenta de mapeamento objeto-relacional (ORM) e requer um banco de dados MySQL.
+O ApiChiquePet é um projeto desenvolvido em .NET 7.0 que oferece uma API para gerenciar informações relacionadas a animais de estimação com estilo e elegância. O projeto utiliza o Entity Framework Core como ferramenta de mapeamento objeto-relacional (ORM) e requer um banco de dados MySQL.
 
 ## Pré-requisitos
 - [.NET 7.0](https://dotnet.microsoft.com/download)
@@ -19,6 +19,13 @@ Antes de iniciar o projeto, é necessário configurar as informações do banco 
   },
   // ... outras configurações ...
 }
+```
+
+## Configuração do Banco de Dados no MySQL
+Antes de executar o comando `dotnet ef database update`, certifique-se de criar o banco de dados no MySQL. Você pode fazer isso com o seguinte comando SQL:
+
+```sql
+CREATE DATABASE ChiquePetDb;
 ```
 
 ## Migrações do Banco de Dados
