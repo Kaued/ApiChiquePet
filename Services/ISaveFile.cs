@@ -1,4 +1,4 @@
-namespace APICatalogo.Services
+namespace ApiChikPet.Services
 {
 
     public interface ISaveFile{

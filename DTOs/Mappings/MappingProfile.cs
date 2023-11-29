@@ -1,9 +1,9 @@
-using ApiCatalogo.DTOs.Users;
-using ApiCatalogo.Pagination;
-using APICatalogo.Models;
+using ApiChikPet.DTOs.Users;
+using ApiChikPet.Pagination;
+using ApiChikPet.Models;
 using AutoMapper;
 
-namespace ApiCatalogo.DTOs.Mappings
+namespace ApiChikPet.DTOs.Mappings
 {
 
   public class MappingProfile : Profile

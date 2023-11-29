@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiCatalogo.DTOs{
+namespace ApiChikPet.DTOs{
 
   public class ChangeOrderDTO{
 

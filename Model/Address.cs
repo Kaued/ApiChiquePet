@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace APICatalogo.Models;
+namespace ApiChikPet.Models;
 
 
 public class Address

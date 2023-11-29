@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace APICatalogo.Models
+namespace ApiChikPet.Models
 {
 
   public class OrderProduct

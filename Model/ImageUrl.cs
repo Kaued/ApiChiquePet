@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using APICatalogo.Models;
+using ApiChikPet.Models;
 
 [Table("ImageUrl")]
 public class ImageUrl

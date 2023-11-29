@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace APICatalogo.Filters
+namespace ApiChikPet.Filters
 {
 
   public class ApiLogginFilter : IActionFilter

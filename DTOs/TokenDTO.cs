@@ -1,4 +1,4 @@
-namespace ApiCatalogo.DTOs
+namespace ApiChikPet.DTOs
 {
 
   public class TokenDTO

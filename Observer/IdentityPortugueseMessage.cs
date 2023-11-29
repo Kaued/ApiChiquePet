@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace APICatalogo.Observer
+namespace ApiChikPet.Observer
 {
   public class IdentityPortugueseMessages : IdentityErrorDescriber
   {

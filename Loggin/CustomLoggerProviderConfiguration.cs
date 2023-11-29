@@ -1,4 +1,4 @@
-namespace ApiCatalogo.Loggin{
+namespace ApiChikPet.Loggin{
 
   public class CustomLoggerProviderConfiguration{
 

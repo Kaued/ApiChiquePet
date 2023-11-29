@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace APICatalogo.Models;
+namespace ApiChikPet.Models;
 
 
 public class UserModel : IdentityUser

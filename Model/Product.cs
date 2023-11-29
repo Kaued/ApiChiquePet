@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace APICatalogo.Models;
+namespace ApiChikPet.Models;
 
 [Table("Product")]
 public class Product

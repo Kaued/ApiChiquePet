@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiCatalogo.DTOs.Users
+namespace ApiChikPet.DTOs.Users
 {
 
   public class LoginUserDTO

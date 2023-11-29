@@ -2,15 +2,15 @@
 // using System.Collections.Generic;
 // using System.Linq;
 // using System.Threading.Tasks;
-// using APICatalogo.Context;
-// using APICatalogo.Models;
-// using APICatalogo.Service;
+// using ApiChikPet.Context;
+// using ApiChikPet.Models;
+// using ApiChikPet.Service;
 // using Microsoft.AspNetCore.Authorization;
 // using Microsoft.AspNetCore.Http;
 // using Microsoft.AspNetCore.Mvc;
 // using Microsoft.EntityFrameworkCore;
 
-// namespace ApiCatalogo.Controllers;
+// namespace ApiChikPet.Controllers;
 
 // [Route("[controller]")]
 // [ApiController]

@@ -1,4 +1,4 @@
-namespace ApiCatalogo.Class{
+namespace ApiChikPet.Class{
 
 
   public class ItemOrder{
