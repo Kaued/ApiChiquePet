@@ -12,6 +12,10 @@ public class UserModel : IdentityUser
   }
   [Required]
   public DateTime BirthDate {get; set;}
+  
+  [Required]
+  [StringLength(123)]
+  public string FullName {get; set;}
 
   public ICollection<Address> Address {get; set;}
 }

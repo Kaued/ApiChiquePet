@@ -45,7 +45,7 @@ public class AppDbContext : IdentityDbContext<UserModel>
   {
 
     List<UserModel> users = new List<UserModel>(){
-      new UserModel(){UserName="Chique Pet", NormalizedUserName="CHIQUE PET", Email="kauedomingues98@gmail.com", NormalizedEmail="KAUEDOMINGUES98@GMAIL.COM",BirthDate = new DateTime(2003, 10, 09), EmailConfirmed=true, PhoneNumber="17996583206", PhoneNumberConfirmed=true}
+      new UserModel(){UserName="Chique Pet", NormalizedUserName="CHIQUE PET", Email="kauedomingues98@gmail.com", NormalizedEmail="KAUEDOMINGUES98@GMAIL.COM",BirthDate = new DateTime(2003, 10, 09), EmailConfirmed=true, PhoneNumber="17996583206", PhoneNumberConfirmed=true, FullName="Chique Pet"}
     };
 
     model.Entity<UserModel>().HasData(users);
