@@ -180,6 +180,7 @@ public class AdminController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin")]
     public async Task<ActionResult> RegisterUser([FromBody] RegisterUserDTO model)
     {
+        model.UserName = model.Email;
         UserModel user = _mapper.Map<UserModel>(model);
 
         var result = await _userManager.CreateAsync(user, model.Password);
@@ -222,7 +223,8 @@ public class AdminController : ControllerBase
             }
 
         }
-
+        
+        model.UserName = model.Email;
         var updateResult = await Update(model, email);
 
         return updateResult is not null ? Ok(updateResult.Email) : BadRequest();
