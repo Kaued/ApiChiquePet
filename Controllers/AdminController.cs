@@ -128,9 +128,9 @@ public class AdminController : ControllerBase
             var user = await _userManager.FindByEmailAsync(email);
 
             var userDTO = _mapper.Map<ListUserDTO>(user);
-            
+
             if (emailToken is not null && email == emailToken)
-            {   
+            {
                 return (user is not null) ? Ok(userDTO) : Unauthorized();
             }
             else
@@ -139,7 +139,7 @@ public class AdminController : ControllerBase
                 var checkRoles = roles.Contains("Super Admin");
 
                 if (checkRoles)
-                {   
+                {
                     ModelState.AddModelError("email", "Usuario não encontrado");
                     return (user is not null) ? Ok(userDTO) : BadRequest(ModelState);
                 }
@@ -240,13 +240,32 @@ public class AdminController : ControllerBase
             }
 
         }
-        
+
         model.UserName = model.Email;
         var updateResult = await Update(model, email);
 
         return updateResult is not null ? Ok(updateResult.Email) : BadRequest();
 
 
+    }
+
+    [AllowAnonymous]
+    [HttpPost("confirmEmail")]
+    public async Task<ActionResult> ConfirmEmailAdmin(ConfirmEmailDTO confirmEmail)
+    {
+        var user = await _userManager.FindByIdAsync(confirmEmail.UserId);
+
+        if(user is null){
+            return BadRequest("Usuário não foi encontrado");
+        }
+
+        var result = await _userManager.ConfirmEmailAsync(user, confirmEmail.Token);
+
+        if(result.Succeeded){
+            return Ok();
+        }
+
+        return BadRequest("Não foi possível confirmar o email");
     }
 
     [HttpDelete("{email}")]
@@ -324,9 +343,10 @@ public class AdminController : ControllerBase
 
         UserModel? userToChange = await _userManager.FindByEmailAsync(email);
 
-        if(userToChange is null){
+        if (userToChange is null)
+        {
             return null;
-        } 
+        }
         _mapper.Map<UpdateUserDTO, UserModel>(model, userToChange);
 
         if (model.Password is not null)

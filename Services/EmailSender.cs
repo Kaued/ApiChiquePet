@@ -20,6 +20,9 @@ namespace ApiChikPet.Services
 
       using (var client = new SmtpClient(_config["SMTP:Host"], int.Parse(_config["SMTP:Port"]!))
       {
+        EnableSsl = true,
+        DeliveryMethod = SmtpDeliveryMethod.Network,
+        UseDefaultCredentials = false,
         Credentials = new NetworkCredential(_config["SMTP:UserName"], _config["SMTP:Password"])
       })
       {
