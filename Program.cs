@@ -93,9 +93,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     ServerVersion.AutoDetect(mySqlConnection)));
 
 var environment = builder.Environment;
+var config = builder.Configuration;
 
 builder.Services.AddSingleton<ITokenService>(new TokenService());
 builder.Services.AddSingleton<ISaveFile>(new SaveFile(environment));
+builder.Services.AddSingleton<IEmailSender>(new EmailSender(config));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -130,6 +132,7 @@ builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderCon
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedEmail = true;
 });
 
 builder.Services.AddSingleton(mapper);

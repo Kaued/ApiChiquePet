@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Web;
+using ApiChikPet.Services;
 
 namespace ApiChikPet.Controllers;
 
@@ -28,12 +30,13 @@ public class AdminController : ControllerBase
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
     private readonly IPasswordHasher<UserModel> _password;
+    private readonly IEmailSender _emailSender;
     private readonly IList<string> rolesAccepts = new List<string>(){
         "Seller",
         "Super Admin"
     };
 
-    public AdminController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher, AppDbContext context)
+    public AdminController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher, AppDbContext context, IEmailSender emailSender)
     {
         this._userManager = userManager;
         this._signInManager = signInManager;
@@ -42,6 +45,7 @@ public class AdminController : ControllerBase
         this._tokenService = tokenService;
         this._password = passwordHasher;
         this._context = context;
+        this._emailSender = emailSender;
     }
 
     [HttpGet]
@@ -190,6 +194,19 @@ public class AdminController : ControllerBase
         }
 
         await _userManager.AddToRoleAsync(user, "Seller");
+
+        var userDb = await _userManager.FindByEmailAsync(user.Email!);
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(userDb!);
+
+        var uriBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]!);
+        var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+        query["token"] = token;
+        query["userid"] = userDb!.Id;
+        uriBuilder.Query = query.ToString();
+        var urlString = uriBuilder.ToString();
+
+        var senderEmail = _config["ReturnPaths:SenderEmail"];
+        await _emailSender.SendEmailAsync(senderEmail, userDb.Email, "Confirme o seu e-mail", urlString, "teste");
 
         await _signInManager.SignInAsync(user, false);
 
