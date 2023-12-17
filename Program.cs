@@ -97,7 +97,7 @@ var config = builder.Configuration;
 
 builder.Services.AddSingleton<ITokenService>(new TokenService());
 builder.Services.AddSingleton<ISaveFile>(new SaveFile(environment));
-builder.Services.AddSingleton<IEmailSender>(new EmailSender(config));
+builder.Services.AddSingleton<IEmailSender>(new EmailSender(config, environment));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
