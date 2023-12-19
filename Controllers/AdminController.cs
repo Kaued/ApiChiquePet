@@ -206,7 +206,7 @@ public class AdminController : ControllerBase
         uriBuilder.Query = query.ToString();
         var urlString = uriBuilder.ToString();
 
-        var message = @"<p>Oi tudo bem? Estamos aqui para confirmar o seu cadastro no site da <b>ChikPet</b>. Seu cadastro em para o email "+ user.Email+". Clique no link abaixo para confirmar o seu cadastro</p><br/><a href='"+urlString+"'>Clique aqui para confimar</a>   ";
+        var message = @"<p>Oi tudo bem? Estamos aqui para confirmar o seu cadastro no site da <b>ChikPet</b>. Seu cadastro em para o email " + user.Email + ". Clique no link abaixo para confirmar o seu cadastro</p><br/><a href='" + urlString + "' style='display: block; padding:40px; text-align: center; font-size: 28px; font-weigh: 700; text-decoration: none; color: black; background: #d1d1d1; border-radius: 10px; margin-left: auto; margin-right: auto;'>Clique aqui para confimar</a> ";
 
         var senderEmail = _config["ReturnPaths:SenderEmail"];
         await _emailSender.SendEmailAsync(senderEmail, userDb.Email, "Confirme o seu e-mail", message, "Confirme o seu email");
@@ -251,19 +251,79 @@ public class AdminController : ControllerBase
 
     }
 
+    [HttpGet("resendEmail/{email}")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Super Admin,Seller")]
+    public async Task<ActionResult> ResendEmail(string email)
+    {
+
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        if (identity is null)
+        {
+            return BadRequest();
+        }
+
+        IEnumerable<Claim> claims = identity.Claims;
+        string? emailToken = claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
+        if (emailToken is null)
+            return BadRequest("Sem email no token");
+
+
+
+        if (email != emailToken)
+        {
+            var userRequest = await _userManager.FindByEmailAsync(emailToken);
+            var roles = await _userManager.GetRolesAsync(userRequest);
+            var isNotSuperAdmin = roles.FirstOrDefault("Super Admin") is null;
+            if (isNotSuperAdmin)
+            {
+                return Unauthorized();
+            }
+
+        }
+
+        var userDb = await _userManager.FindByEmailAsync(email);
+
+        if (userDb is null)
+        {
+            return BadRequest();
+        }
+
+        if(userDb.EmailConfirmed){
+            return BadRequest();
+        }
+
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(userDb);
+
+        var uriBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]!);
+        var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+        query["token"] = token;
+        query["userid"] = userDb!.Id;
+        uriBuilder.Query = query.ToString();
+        var urlString = uriBuilder.ToString();
+
+        var message = @"<p>Oi tudo bem? Estamos aqui para confirmar o seu cadastro no site da <b>ChikPet</b>. Seu cadastro em para o email " + userDb.Email + ". Clique no link abaixo para confirmar o seu cadastro</p><br/><a href='" + urlString + "' style='display: block; padding:40px; text-align: center; font-size: 28px; font-weigh: 700; text-decoration: none; color: black; background: #d1d1d1; border-radius: 10px; margin-left: auto; margin-right: auto;'>Clique aqui para confimar</a> ";
+
+        var senderEmail = _config["ReturnPaths:SenderEmail"];
+        await _emailSender.SendEmailAsync(senderEmail!, userDb.Email!, "Confirme o seu e-mail", message, "Confirme o seu email");
+
+        return Ok();
+    }
+
     [AllowAnonymous]
     [HttpPost("confirmEmail")]
     public async Task<ActionResult> ConfirmEmailAdmin(ConfirmEmailDTO confirmEmail)
     {
         var user = await _userManager.FindByIdAsync(confirmEmail.UserId);
 
-        if(user is null){
+        if (user is null)
+        {
             return BadRequest("Usuário não foi encontrado");
         }
 
         var result = await _userManager.ConfirmEmailAsync(user, confirmEmail.Token);
 
-        if(result.Succeeded){
+        if (result.Succeeded)
+        {
             return Ok();
         }
 

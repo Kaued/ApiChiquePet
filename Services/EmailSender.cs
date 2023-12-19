@@ -30,7 +30,7 @@ namespace ApiChikPet.Services
         htmlBody = streamReader.ReadToEnd();
       }
 
-      string footer = "Atenciosamente, Equipe Chikpet. Para entrar em contato, utilize o e-mail chikpetrp@gmail.com ou ligue para [Inserir número de telefone]. Este é um e-mail automático; se recebido por engano, favor ignorar. Chikpet - [Inserir endereço da empresa] <a href=''>chikpet.com.br</a>.";
+      string footer = "Atenciosamente, Equipe Chikpet. Para entrar em contato, utilize o e-mail chikpetrp@gmail.com ou ligue para [Inserir número de telefone].<br/> Este é um e-mail automático; se recebido por engano, favor ignorar. Chikpet - [Inserir endereço da empresa]<br/>e <a href=''>chikpet.com.br</a>.";
 
       LinkedResource res = new LinkedResource(_webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString() + "images" + Path.DirectorySeparatorChar.ToString() + "default" + Path.DirectorySeparatorChar.ToString() + "logo.jpg");
       res.ContentId = Guid.NewGuid().ToString();
@@ -68,6 +68,13 @@ namespace ApiChikPet.Services
       AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
       alternateView.LinkedResources.Add(res);
       return alternateView;
+    }
+
+    private static string FixBase64ForImage(string Image)
+    {
+      System.Text.StringBuilder sbText = new System.Text.StringBuilder(Image, Image.Length);
+      sbText.Replace("\r\n", string.Empty); sbText.Replace(" ", string.Empty);
+      return sbText.ToString();
     }
   }
 
