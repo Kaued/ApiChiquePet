@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ApiChikPet.Services;
+using System.Web;
 
 namespace ApiChikPet.Controllers;
 
@@ -28,13 +30,15 @@ public class ClientController : ControllerBase
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
     private readonly IPasswordHasher<UserModel> _password;
+
+    private readonly IEmailSender _emailSender;
     private readonly IList<string> rolesAccepts = new List<string>(){
         "Client",
         "Seller",
         "Super Admin"
     };
 
-    public ClientController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher, AppDbContext context)
+    public ClientController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration config, IMapper mapper, ITokenService tokenService, IPasswordHasher<UserModel> passwordHasher, AppDbContext context, IEmailSender emailSender)
     {
         this._userManager = userManager;
         this._signInManager = signInManager;
@@ -43,6 +47,7 @@ public class ClientController : ControllerBase
         this._tokenService = tokenService;
         this._password = passwordHasher;
         this._context = context;
+        this._emailSender = emailSender;
     }
 
     [HttpGet("{email}")]
@@ -109,7 +114,7 @@ public class ClientController : ControllerBase
                 return Unauthorized();
             }
 
-            var orders = await PageList<Order>.ToPageListAsync(_context.Orders.Include((p) => p.User).Where((p) => p.User!.Email == user.Email).Include((p) => p.Address).Include((p)=>p.OrderProducts).ThenInclude((o)=>o.Product).OrderBy((p)=>p.CreateDate).AsNoTracking(), orderParameters.PageNumber, orderParameters.PageSize);
+            var orders = await PageList<Order>.ToPageListAsync(_context.Orders.Include((p) => p.User).Where((p) => p.User!.Email == user.Email).Include((p) => p.Address).Include((p) => p.OrderProducts).ThenInclude((o) => o.Product).OrderBy((p) => p.CreateDate).AsNoTracking(), orderParameters.PageNumber, orderParameters.PageSize);
 
             var pagination = _mapper.Map<PaginationDTO>(orders);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
@@ -134,11 +139,54 @@ public class ClientController : ControllerBase
             return BadRequest(result.Errors);
         }
 
+        var userDb = await _userManager.FindByEmailAsync(model.Email);
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(userDb!);
+
         await _userManager.AddToRoleAsync(user, "Client");
+
+        var uriBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]!);
+        var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+        query["token"] = token;
+        query["userid"] = userDb!.Id;
+        uriBuilder.Query = query.ToString();
+        var urlString = uriBuilder.ToString();
+
+        var message = @"<p>Oi tudo bem? Estamos aqui para confirmar o seu cadastro no site da <b>ChikPet</b>. Seu cadastro em para o email " + user.Email + ". Clique no link abaixo para confirmar o seu cadastro</p><br/><a href='" + urlString + "' style='display: block; padding:40px; text-align: center; font-size: 28px; font-weigh: 700; text-decoration: none; color: black; background: #d1d1d1; border-radius: 10px; margin-left: auto; margin-right: auto;'>Clique aqui para confimar</a> ";
+
+        var senderEmail = _config["ReturnPaths:SenderEmail"];
+        await _emailSender.SendEmailAsync(senderEmail!, userDb.Email!, "Confirme o seu e-mail", message, "Confirme o seu email");
 
         await _signInManager.SignInAsync(user, false);
 
         return Ok(user.Email);
+    }
+
+    [HttpGet("resendEmail/{email}")]
+    [AllowAnonymous]
+    public async Task<ActionResult> ResendEmail(string email)
+    {
+
+        var userDb = await _userManager.FindByEmailAsync(email);
+
+        if (userDb is not null)
+        {
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(userDb);
+
+            var uriBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]!);
+            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+            query["token"] = token;
+            query["userid"] = userDb!.Id;
+            uriBuilder.Query = query.ToString();
+            var urlString = uriBuilder.ToString();
+
+            var message = @"<p>Oi tudo bem? Estamos aqui para confirmar o seu cadastro no site da <b>ChikPet</b>. Seu cadastro em para o email " + userDb.Email + ". Clique no link abaixo para confirmar o seu cadastro</p><br/><a href='" + urlString + "' style='display: block; padding:40px; text-align: center; font-size: 28px; font-weigh: 700; text-decoration: none; color: black; background: #d1d1d1; border-radius: 10px; margin-left: auto; margin-right: auto;'>Clique aqui para confimar</a> ";
+
+            var senderEmail = _config["ReturnPaths:SenderEmail"];
+            await _emailSender.SendEmailAsync(senderEmail!, userDb.Email!, "Confirme o seu e-mail", message, "Confirme o seu email");
+        }
+
+        return Ok("Caso tenha algum cadastro com esse email, será enviado uma mensagem de confirmação");
     }
 
     [HttpPut("{email}")]

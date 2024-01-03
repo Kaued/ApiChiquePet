@@ -209,7 +209,7 @@ public class AdminController : ControllerBase
         var message = @"<p>Oi tudo bem? Estamos aqui para confirmar o seu cadastro no site da <b>ChikPet</b>. Seu cadastro em para o email " + user.Email + ". Clique no link abaixo para confirmar o seu cadastro</p><br/><a href='" + urlString + "' style='display: block; padding:40px; text-align: center; font-size: 28px; font-weigh: 700; text-decoration: none; color: black; background: #d1d1d1; border-radius: 10px; margin-left: auto; margin-right: auto;'>Clique aqui para confimar</a> ";
 
         var senderEmail = _config["ReturnPaths:SenderEmail"];
-        await _emailSender.SendEmailAsync(senderEmail, userDb.Email, "Confirme o seu e-mail", message, "Confirme o seu email");
+        await _emailSender.SendEmailAsync(senderEmail!, userDb.Email!, "Confirme o seu e-mail", message, "Confirme o seu email");
 
         await _signInManager.SignInAsync(user, false);
 
